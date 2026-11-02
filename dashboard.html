@@ -1797,7 +1797,7 @@ async function fetchChain() {
     const data = await res.json();
 
     const badge = document.getElementById('chainIntegrity');
-    if (data.integrity === 'INTACT') {
+    if (data.intact === true) {
       badge.className = 'chain-integrity-badge chain-integrity-intact';
       badge.innerHTML = '<svg class="ico" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> CHAIN INTACT';
     } else {
@@ -1805,24 +1805,27 @@ async function fetchChain() {
       badge.innerHTML = '<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> CHAIN COMPROMISED';
     }
 
-    if (!data.chain || data.chain.length === 0) {
-      tl.innerHTML = '<div style="font-family:var(--font-mono);font-size:10px;color:var(--steel);padding:20px 0;letter-spacing:1px;">[ NO BLOCKS YET — RUN A SCAN FIRST ]</div>';
+    const entries = data.entries || data.chain || [];
+    if (entries.length === 0) {
+      tl.innerHTML = '<div style="font-family:var(--font-mono);font-size:10px;color:var(--steel);padding:20px 0;letter-spacing:1px;">[ NO BLOCKS YET — RUN A SCAN VIA THE SCANNER TAB FIRST ]</div>';
       return;
     }
 
     tl.innerHTML = '';
-    data.chain.slice().reverse().forEach(block => {
+    entries.forEach(block => {
       const wrap = document.createElement('div');
       wrap.className = 'chain-node-wrap';
 
-      const sev = block.findings > 0 ? 'badge-tripped' : 'badge-settled';
-      const sevText = block.findings > 0 ? block.findings + ' FINDINGS' : 'CLEAN';
+      const fc = block.finding_count ?? block.findings ?? 0;
+      const sev = fc > 0 ? 'badge-tripped' : 'badge-settled';
+      const sevText = fc > 0 ? fc + ' FINDINGS' : 'CLEAN';
+      const pos = block.position ?? (block.index + 1) ?? '?';
 
       wrap.innerHTML = `
         <div class="chain-dot-col"><div class="chain-dot"></div></div>
         <div class="chain-card">
           <div class="chain-card-header">
-            <div class="chain-idx">BLOCK #${block.position}</div>
+            <div class="chain-idx">BLOCK #${pos}</div>
             <div style="display:flex;gap:8px;align-items:center">
               <span class="audit-badge ${sev}">${sevText}</span>
               <div class="chain-ts">${new Date(block.timestamp).toLocaleString()}</div>
