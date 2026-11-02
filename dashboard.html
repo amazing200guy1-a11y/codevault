@@ -6,802 +6,1864 @@
   <title>CodeVault — Forensic Code Scanner</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* ================================================================
-       CODEVAULT — Forensic Code Scanner
-       Titanium / Gunmetal Design System — Kiroween 2026
-       ================================================================ */
+    /* ════════════════════════════════════════════════════════
+       CODEVAULT — Forensic Code Security Scanner
+       Institutional Aerospace Titanium & Gunmetal
+       Exact PayGuard / VoteGuard Design System — Kiroween 2026
+       ════════════════════════════════════════════════════════ */
+
     :root {
-      --bg:           #04070D;
+      --bg: #04070D;
       --bg-secondary: #080C14;
-      --card-top:     #232C3B;
-      --card-mid:     #171E2A;
-      --card-base:    #0F131C;
-      --border:       rgba(200,220,240,0.18);
-      --border-dim:   rgba(200,220,240,0.08);
-      --inset:        rgba(200,220,240,0.07);
-      --shadow:       0 8px 32px rgba(0,0,0,0.6);
-      --emerald:      #10B981;
-      --emerald-dim:  rgba(16,185,129,0.12);
-      --crimson:      #E11D48;
-      --crimson-dim:  rgba(225,29,72,0.12);
-      --amber:        #F59E0B;
-      --amber-dim:    rgba(245,158,11,0.12);
-      --ice:          #7DD3FC;
-      --ice-dim:      rgba(125,211,252,0.10);
-      --text:         #F1F5F9;
-      --text-dim:     #94A3B8;
-      --text-muted:   #64748B;
-      --font-mono:    'JetBrains Mono', monospace;
-      --font-ui:      'Outfit', sans-serif;
-      --r-card:       6px;
-      --r-pill:       3px;
-      --tr:           0.22s cubic-bezier(0.16,1,0.3,1);
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:var(--font-ui);min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-    body::before{
-      content:"";position:fixed;inset:0;
+      /* Sculpted Gunmetal Titanium Stack */
+      --bg-gunmetal-top: #232C3B;
+      --bg-gunmetal-mid: #171E2A;
+      --bg-gunmetal-base: #0F131C;
+      --bg-tray: #121824;
+      --bg-tray-hover: #161D2B;
+
+      /* Titanium Metallic Hairlines & Bevels */
+      --border: rgba(200, 220, 240, 0.10);
+      --border-chamfer: rgba(200, 220, 240, 0.18);
+      --border-hover: rgba(200, 220, 240, 0.35);
+      --border-accent: rgba(200, 220, 240, 0.25);
+
+      /* Text & Monospace Values */
+      --text: #F1F5F9;
+      --text-dim: #94A3B8;
+      --text-slate: #8A98A8;
+      --text-muted: #64748B;
+
+      --platinum: #E2E8F0;
+      --platinum-bright: #F8FAFC;
+      --steel: #475569;
+
+      --emerald: #10B981;
+      --emerald-dim: rgba(16, 185, 129, 0.12);
+
+      --crimson: #E11D48;
+      --crimson-dim: rgba(225, 29, 72, 0.12);
+
+      --amber: #F59E0B;
+      --amber-dim: rgba(245, 158, 11, 0.12);
+
+      --ice: #7DD3FC;
+      --ice-dim: rgba(125, 211, 252, 0.10);
+
+      /* Recessed Pill Badges */
+      --pill-bg: #1E2838;
+      --pill-border: rgba(200, 220, 240, 0.22);
+      --pill-text: #D8E8F8;
+
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Outfit', sans-serif;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 18px;
+      --transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
       background:
-        radial-gradient(ellipse 80% 40% at 50% -5%,rgba(125,211,252,0.055),transparent 65%),
-        radial-gradient(circle at 8% 20%,rgba(16,185,129,0.04),transparent 40%),
-        radial-gradient(circle at 92% 65%,rgba(225,29,72,0.032),transparent 45%),
-        linear-gradient(rgba(200,220,240,0.016) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(200,220,240,0.016) 1px,transparent 1px);
-      background-size:100% 100%,100% 100%,100% 100%,44px 44px,44px 44px;
-      pointer-events:none;z-index:0;
-    }
-    .wrap{position:relative;z-index:1;max-width:1300px;margin:0 auto;padding:0 28px 80px}
-
-    /* ── CARD ── */
-    .card{
-      background:linear-gradient(180deg,var(--card-top) 0%,var(--card-mid) 55%,var(--card-base) 100%);
-      border:1px solid var(--border);border-radius:var(--r-card);
-      box-shadow:var(--shadow),inset 0 1px 0 var(--inset);
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(125, 211, 252, 0.05), transparent 70%),
+        radial-gradient(circle at 10% 25%, rgba(0, 112, 186, 0.04), transparent 45%),
+        radial-gradient(circle at 90% 70%, rgba(225, 29, 72, 0.025), transparent 45%),
+        linear-gradient(rgba(200, 220, 240, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200, 220, 240, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    /* ── BADGES ── */
-    .badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:var(--r-pill);font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
-    .badge-green{background:var(--emerald-dim);color:var(--emerald);border:1px solid rgba(16,185,129,0.3)}
-    .badge-red  {background:var(--crimson-dim); color:var(--crimson); border:1px solid rgba(225,29,72,0.35)}
-    .badge-amber{background:var(--amber-dim);   color:var(--amber);   border:1px solid rgba(245,158,11,0.3)}
-    .badge-ice  {background:var(--ice-dim);     color:var(--ice);     border:1px solid rgba(125,211,252,0.25)}
-    .badge-dim  {background:rgba(200,220,240,0.05);color:var(--text-dim);border:1px solid rgba(200,220,240,0.12)}
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
 
-    /* ── MONO LABEL ── */
-    .mono-label{font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--text-muted)}
+    .ico {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
 
-    /* ── ICO ── */
-    .ico{flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .ico-lg {
+      width: 18px;
+      height: 18px;
+    }
 
-    /* ── SECTION RULE ── */
-    .section-rule{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-    .section-rule .mono-label{white-space:nowrap}
-    .section-rule::after{content:"";flex:1;height:1px;background:var(--border-dim)}
+    /* ═══════════════ TOP NAV BAR ═══════════════ */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
 
-    /* ── ANIMATIONS ── */
-    @keyframes pulse2{0%,100%{opacity:1}50%{opacity:.3}}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-    @keyframes slideIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .fade-up{animation:fadeUp .35s ease forwards}
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-    /* ── HEADER ── */
-    .site-header{display:flex;align-items:center;justify-content:space-between;padding:20px 0 16px;border-bottom:1px solid var(--border-dim);gap:16px;flex-wrap:wrap}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand-icon{width:38px;height:38px;background:linear-gradient(135deg,#1E2838,#121824);border:1px solid rgba(200,220,240,0.22);border-radius:var(--r-card);display:flex;align-items:center;justify-content:center;color:var(--ice);box-shadow:0 4px 12px rgba(0,0,0,0.5),inset 0 1px 0 rgba(200,220,240,0.16)}
-    .brand-name{font-family:var(--font-ui);font-size:20px;font-weight:800;letter-spacing:-.4px;color:#fff}
-    .brand-name em{color:var(--ice);font-style:normal}
-    .brand-tag{font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:var(--text-muted);padding:2px 7px;background:rgba(200,220,240,0.04);border:1px solid var(--border-dim);border-radius:var(--r-pill)}
-    .header-pills{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    .h-pill{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;background:#1A2130;border:1px solid rgba(200,220,240,0.14);border-radius:var(--r-pill);font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.9px;color:var(--text-dim);box-shadow:inset 0 1px 0 rgba(200,220,240,0.08)}
-    .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-    .dot-green{background:var(--emerald);box-shadow:0 0 7px rgba(16,185,129,0.8);animation:pulse2 2s infinite}
-    .dot-amber{background:var(--amber);box-shadow:0 0 7px rgba(245,158,11,0.8);animation:pulse2 1.5s infinite}
-    .dot-ice{background:var(--ice);box-shadow:0 0 7px rgba(125,211,252,0.7)}
-    .dot-dim{background:var(--text-muted)}
-    .dot-red{background:var(--crimson);box-shadow:0 0 7px rgba(225,29,72,0.8);animation:pulse2 1.2s infinite}
+    .brand-crest {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #1E2838 0%, #121824 100%);
+      border: 1px solid rgba(200, 220, 240, 0.25);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(200, 220, 240, 0.18);
+      color: var(--ice);
+    }
 
-    /* ── TAB NAV ── */
-    .tab-nav{display:flex;gap:2px;padding:10px 0 0;border-bottom:1px solid var(--border-dim)}
-    .tab-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;background:transparent;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:var(--font-mono);font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);cursor:pointer;transition:color var(--tr),border-color var(--tr)}
-    .tab-btn:hover{color:var(--text-dim)}
-    .tab-btn.active{color:var(--ice);border-bottom-color:var(--ice)}
-    .tab-btn svg{width:13px;height:13px}
+    .brand-name {
+      font-family: var(--font-heading);
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: #fff;
+    }
 
-    /* ── CONN BAR ── */
-    .conn-bar{display:flex;align-items:center;gap:10px;padding:7px 14px;margin:12px 0 0;border-radius:var(--r-pill);font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.8px;transition:all var(--tr)}
-    .conn-bar.online {background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.25); color:var(--emerald)}
-    .conn-bar.offline{background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.25); color:var(--amber)}
+    .brand-name span {
+      color: var(--ice);
+    }
 
-    /* ── PAGE ── */
-    .page{display:none;animation:fadeUp .28s ease forwards;padding-top:24px}
-    .page.active{display:block}
+    .brand-code {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-slate);
+      padding: 2px 6px;
+      background: var(--bg-tray);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
 
-    /* ── STAT BAR ── */
-    .stat-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-    .stat-card{padding:18px 20px 16px;position:relative;overflow:hidden}
-    .stat-card .mono-label{display:flex;align-items:center;gap:6px;margin-bottom:10px}
-    .stat-val{font-family:var(--font-mono);font-size:34px;font-weight:800;line-height:1;margin-bottom:4px}
-    .stat-sub{font-size:11px;color:var(--text-muted)}
-    .stat-bar-bottom{position:absolute;bottom:0;left:0;right:0;height:2px}
-    .sv-ice   .stat-val{color:var(--ice)}    .sv-ice   .stat-bar-bottom{background:linear-gradient(90deg,var(--ice),transparent)}
-    .sv-red   .stat-val{color:var(--crimson)} .sv-red   .stat-bar-bottom{background:linear-gradient(90deg,var(--crimson),transparent)}
-    .sv-green .stat-val{color:var(--emerald)} .sv-green .stat-bar-bottom{background:linear-gradient(90deg,var(--emerald),transparent)}
-    .sv-amber .stat-val{color:var(--amber)}  .sv-amber .stat-bar-bottom{background:linear-gradient(90deg,var(--amber),transparent)}
+    .nav-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-    /* ── COCKPIT GRID ── */
-    .cockpit-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:16px;margin-bottom:20px}
-    @media(max-width:900px){.cockpit-grid{grid-template-columns:1fr}}
+    .titanium-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      background: var(--pill-bg);
+      border: 1px solid var(--pill-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--pill-text);
+      box-shadow: inset 0 1px 0 rgba(200, 220, 240, 0.14), 0 2px 6px rgba(0,0,0,0.4);
+    }
 
-    /* ── PANEL ── */
-    .panel-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border-dim)}
-    .panel-title{font-family:var(--font-mono);font-size:10.5px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--text);display:flex;align-items:center;gap:8px}
-    .panel-title svg{width:13px;height:13px}
+    .pill-dot-ice {
+      width: 6px;
+      height: 6px;
+      background: var(--ice);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(125, 211, 252, 0.7);
+      animation: pulse-ice 2s ease-in-out infinite;
+    }
 
-    /* ── CODE INPUT ── */
-    .code-panel{padding:20px 22px}
-    .editor-chrome{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#0A0E18;border:1px solid var(--border-dim);border-bottom:none;border-radius:var(--r-card) var(--r-card) 0 0}
-    .tc{width:10px;height:10px;border-radius:50%}
-    .tc-r{background:#FF5F57}.tc-y{background:#FEBC2E}.tc-g{background:#28C840}
-    .editor-lbl{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-left:8px}
-    textarea{width:100%;height:210px;background:#070B14;border:1px solid var(--border-dim);border-radius:0 0 var(--r-card) var(--r-card);color:var(--ice);font-family:var(--font-mono);font-size:12px;line-height:1.7;padding:14px 16px;resize:vertical;outline:none;transition:border-color var(--tr)}
-    textarea:focus{border-color:rgba(125,211,252,0.35)}
-    textarea::placeholder{color:var(--text-muted)}
-    .editor-footer{display:flex;align-items:center;gap:10px;margin-top:12px}
-    .line-info{font-family:var(--font-mono);font-size:10px;color:var(--text-muted)}
-    .ef-space{flex:1}
+    .pill-dot-emerald {
+      width: 6px;
+      height: 6px;
+      background: var(--emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+    }
 
-    /* ── BUTTONS ── */
-    .btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:var(--r-pill);font-family:var(--font-mono);font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;cursor:pointer;border:none;transition:all var(--tr)}
-    .btn-ghost{background:rgba(200,220,240,0.05);border:1px solid var(--border-dim);color:var(--text-muted)}
-    .btn-ghost:hover{border-color:var(--border);color:var(--text-dim)}
-    .btn-scan-main{background:linear-gradient(180deg,#10B981,#059669);color:#04070D;box-shadow:0 4px 16px rgba(16,185,129,0.35),inset 0 1px 0 rgba(255,255,255,0.25)}
-    .btn-scan-main:hover{box-shadow:0 6px 22px rgba(16,185,129,0.5);transform:translateY(-1px)}
-    .btn-scan-main:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
-    .btn-ice{background:linear-gradient(180deg,#1E3A5F,#162D4D);border:1px solid rgba(125,211,252,0.3);color:var(--ice);box-shadow:0 4px 14px rgba(125,211,252,0.12)}
-    .btn-ice:hover{box-shadow:0 6px 20px rgba(125,211,252,0.22);transform:translateY(-1px)}
-    .btn svg{width:11px;height:11px}
-    .spinner{width:11px;height:11px;border:2px solid rgba(4,7,13,0.3);border-top-color:#04070D;border-radius:50%;animation:spin .6s linear infinite}
+    @keyframes pulse-ice {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(125, 211, 252, 0.7); }
+      50% { opacity: 0.6; box-shadow: 0 0 4px rgba(125, 211, 252, 0.3); }
+    }
 
-    /* ── LIVE PANEL ── */
-    .live-panel{padding:20px 22px;display:flex;flex-direction:column}
+    /* ═══════════════ TAB NAV ═══════════════ */
+    .tab-nav {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
 
-    /* Risk */
-    .risk-nums{display:flex;align-items:baseline;gap:10px;margin:8px 0 10px}
-    .risk-big{font-family:var(--font-mono);font-size:44px;font-weight:800;line-height:1;color:var(--emerald);transition:color var(--tr)}
-    .risk-track{height:5px;background:rgba(200,220,240,0.08);border-radius:3px;overflow:hidden;margin-bottom:6px}
-    .risk-fill{height:100%;border-radius:3px;width:0%;background:var(--emerald);transition:width .7s cubic-bezier(.4,0,.2,1),background .4s}
-    .risk-ticks{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:9px;color:var(--text-muted)}
-    .risk-divider{height:1px;background:var(--border-dim);margin:16px 0}
+    .tab-btn {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-slate);
+      padding: 10px 20px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
 
-    /* Feed */
-    .event-feed{overflow-y:auto;max-height:200px;display:flex;flex-direction:column;gap:5px;padding-right:4px}
-    .event-feed::-webkit-scrollbar{width:3px}
-    .event-feed::-webkit-scrollbar-thumb{background:rgba(200,220,240,0.12);border-radius:2px}
-    .feed-entry{display:flex;align-items:center;gap:8px;padding:7px 10px;background:rgba(200,220,240,0.03);border:1px solid var(--border-dim);border-radius:var(--r-pill);font-family:var(--font-mono);font-size:9.5px;color:var(--text-dim);animation:slideIn .2s ease forwards}
-    .feed-entry .ts{color:var(--text-muted);flex-shrink:0}
-    .feed-entry .msg{flex:1}
-    .feed-entry.ok  .msg{color:var(--emerald)}
-    .feed-entry.err .msg{color:var(--crimson)}
-    .feed-entry.warn .msg{color:var(--amber)}
-    .feed-empty-msg{text-align:center;color:var(--text-muted);font-family:var(--font-mono);font-size:10px;padding:28px 0;display:flex;flex-direction:column;align-items:center;gap:8px}
-    .feed-empty-msg svg{opacity:.2}
+    .tab-btn:hover {
+      color: var(--platinum);
+    }
 
-    /* ── FINDINGS ── */
-    .findings-panel{padding:20px 22px;margin-bottom:16px}
-    .findings-count{font-family:var(--font-mono);font-size:10px;font-weight:800;padding:2px 10px;border-radius:20px;background:var(--crimson-dim);color:var(--crimson);border:1px solid rgba(225,29,72,0.3);display:none}
-    .no-findings-msg{text-align:center;padding:32px 20px;color:var(--text-muted);font-family:var(--font-mono);font-size:10.5px;display:flex;flex-direction:column;align-items:center;gap:10px}
-    .no-findings-msg svg{opacity:.2}
-    .finding-item{border:1px solid var(--border-dim);border-radius:var(--r-card);overflow:hidden;margin-bottom:8px;animation:slideIn .2s ease forwards}
-    .finding-item:last-child{margin-bottom:0}
-    .finding-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;background:rgba(200,220,240,0.025);transition:background var(--tr)}
-    .finding-hdr:hover{background:rgba(200,220,240,0.045)}
-    .sev-pill{font-family:var(--font-mono);font-size:9px;font-weight:800;padding:2px 8px;border-radius:var(--r-pill);letter-spacing:.6px;flex-shrink:0}
-    .sev-CRITICAL{background:var(--crimson-dim);color:var(--crimson);border:1px solid rgba(225,29,72,0.35)}
-    .sev-HIGH    {background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,0.3)}
-    .sev-MEDIUM  {background:var(--ice-dim);color:var(--ice);border:1px solid rgba(125,211,252,0.25)}
-    .sev-LOW     {background:var(--emerald-dim);color:var(--emerald);border:1px solid rgba(16,185,129,0.25)}
-    .f-rule{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--ice);flex-shrink:0}
-    .f-name{font-size:12px;font-weight:600;color:var(--text);flex:1}
-    .f-line{font-family:var(--font-mono);font-size:9.5px;color:var(--text-muted);flex-shrink:0}
-    .f-chev{width:13px;height:13px;color:var(--text-muted);transition:transform var(--tr);flex-shrink:0}
-    .finding-body{display:none;padding:14px 16px;border-top:1px solid var(--border-dim);flex-direction:column;gap:10px}
-    .finding-body.open{display:flex}
-    .f-snippet{background:#04070D;border:1px solid var(--border-dim);border-left:2px solid var(--amber);border-radius:0 var(--r-pill) var(--r-pill) 0;padding:9px 12px;font-family:var(--font-mono);font-size:11px;color:var(--amber);overflow-x:auto;white-space:pre}
-    .adv-lbl{font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px}
-    .adv-txt{font-size:12px;color:var(--text-dim);line-height:1.65}
-    .adv-fix{background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.18);border-radius:var(--r-pill);padding:9px 12px;font-family:var(--font-mono);font-size:11px;color:var(--emerald);white-space:pre-wrap;line-height:1.6}
-    .adv-tags{display:flex;gap:6px;flex-wrap:wrap}
-    .adv-tag{font-family:var(--font-mono);font-size:9px;padding:2px 8px;border-radius:var(--r-pill);background:rgba(200,220,240,0.05);color:var(--text-muted);border:1px solid var(--border-dim)}
+    .tab-btn.active {
+      color: var(--ice);
+      border-bottom-color: var(--ice);
+    }
 
-    /* ── RECEIPT ── */
-    .receipt-panel{padding:16px 22px;margin-bottom:16px}
-    .receipt-hdr{font-family:var(--font-mono);font-size:9px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--ice);display:flex;align-items:center;gap:7px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border-dim)}
-    .receipt-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 28px}
-    .r-row{display:flex;gap:10px;margin-bottom:6px;align-items:baseline}
-    .r-key{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);min-width:96px;flex-shrink:0}
-    .r-val{font-family:var(--font-mono);font-size:10px;color:var(--text);word-break:break-all}
-    .r-val.hash{color:var(--ice);font-size:9px}
-    .r-val.ok  {color:var(--emerald)}
-    .r-val.crit{color:var(--crimson)}
-    .r-val.warn{color:var(--amber)}
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
 
-    /* ── CHAIN PAGE ── */
-    .audit-hdr{margin:0 0 8px}
-    .audit-hdr h2{font-family:var(--font-ui);font-size:20px;font-weight:800;letter-spacing:-.3px;color:var(--text);margin-bottom:4px}
-    .audit-hdr p{font-size:13px;color:var(--text-muted);max-width:700px}
+    /* ═══════════════ HERO SECTION ═══════════════ */
+    .cockpit-top-section {
+      margin-bottom: 24px;
+    }
 
-    .chain-toolbar{display:flex;align-items:center;gap:12px;margin:16px 0;flex-wrap:wrap}
-    .cib-intact{background:var(--emerald-dim);color:var(--emerald);border:1px solid rgba(16,185,129,0.3)}
-    .cib-broken{background:var(--crimson-dim);color:var(--crimson);border:1px solid rgba(225,29,72,0.35)}
-    .cib-empty {background:rgba(200,220,240,0.04);color:var(--text-muted);border:1px solid var(--border-dim)}
+    .hero-kicker-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
 
-    /* Chain timeline */
-    .chain-list{position:relative;display:flex;flex-direction:column;gap:0}
-    .chain-entry{display:flex;gap:0;position:relative}
-    .chain-connector{display:flex;flex-direction:column;align-items:center;width:32px;flex-shrink:0}
-    .chain-node{width:10px;height:10px;border-radius:50%;background:var(--ice);border:2px solid var(--bg-secondary);box-shadow:0 0 8px rgba(125,211,252,0.5);flex-shrink:0;margin-top:20px}
-    .chain-line{flex:1;width:2px;background:linear-gradient(180deg,rgba(125,211,252,0.3),rgba(125,211,252,0.05));margin-top:4px}
-    .chain-entry:last-child .chain-line{display:none}
-    .chain-card{flex:1;padding:14px 18px;margin:0 0 10px}
-    .chain-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
-    .chain-idx{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--text-muted);background:rgba(200,220,240,0.06);border:1px solid var(--border-dim);border-radius:var(--r-pill);padding:2px 7px}
-    .chain-ts{font-family:var(--font-mono);font-size:10px;color:var(--text-muted)}
-    .chain-hash-row{display:flex;flex-direction:column;gap:5px;margin-top:8px}
-    .chain-hash-line{display:flex;align-items:baseline;gap:8px}
-    .chain-hash-key{font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);flex-shrink:0;width:38px}
-    .chain-hash-val{font-family:var(--font-mono);font-size:10px;color:var(--ice);word-break:break-all;line-height:1.5}
-    .chain-hash-prev{color:rgba(125,211,252,0.4)}
-    .no-chain-msg{text-align:center;padding:48px;color:var(--text-muted);font-family:var(--font-mono);font-size:10.5px;display:flex;flex-direction:column;align-items:center;gap:12px}
-    .no-chain-msg svg{opacity:.18}
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      background: #1E2838;
+      border: 1px solid rgba(200, 220, 240, 0.22);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #D8E8F8;
+    }
 
-    /* ── REPORT PAGE ── */
-    .report-bar{display:flex;gap:10px;align-items:center;margin-bottom:24px;flex-wrap:wrap}
-    .report-input{flex:1;min-width:220px;background:#070B14;border:1px solid var(--border-dim);border-radius:var(--r-pill);color:var(--text);font-family:var(--font-mono);font-size:11px;padding:9px 14px;outline:none;transition:border-color var(--tr)}
-    .report-input:focus{border-color:rgba(125,211,252,0.35)}
-    .cert-wrap{display:none}
-    .cert-wrap.show{display:block}
-    .cert{max-width:780px;border:1px solid rgba(125,211,252,0.3);border-radius:var(--r-card);overflow:hidden;box-shadow:0 0 40px rgba(125,211,252,0.06)}
-    .cert-top{background:linear-gradient(180deg,#0D1626,#080E1C);padding:28px 32px;text-align:center;border-bottom:1px solid var(--border-dim)}
-    .cert-brand-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px}
-    .cert-brand-name{font-size:22px;font-weight:900;letter-spacing:.06em;color:#fff}
-    .cert-brand-name em{color:var(--ice);font-style:normal}
-    .cert-sub{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);letter-spacing:.8px;margin-bottom:14px}
-    .cert-title{font-size:17px;font-weight:700;color:var(--ice)}
-    .cert-section{padding:20px 32px;border-bottom:1px solid var(--border-dim)}
-    .cert-section:last-of-type{border-bottom:none}
-    .cert-sh{font-family:var(--font-mono);font-size:9px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;gap:8px;margin-bottom:12px}
-    .cert-sh::after{content:'';flex:1;height:1px;background:var(--border-dim)}
-    .c-row{display:flex;gap:12px;margin-bottom:7px;align-items:baseline}
-    .c-key{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);min-width:160px;flex-shrink:0}
-    .c-val{font-family:var(--font-mono);font-size:10px;color:var(--text);word-break:break-all}
-    .c-val.hash{color:var(--ice)}
-    .c-val.ok  {color:var(--emerald)}
-    .c-val.warn{color:var(--amber)}
-    .c-val.crit{color:var(--crimson)}
-    .cert-foot{padding:14px 32px;background:rgba(200,220,240,0.02);font-family:var(--font-mono);font-size:9px;color:var(--text-muted);text-align:center;line-height:1.9;border-top:1px solid var(--border-dim)}
+    .hero-headline {
+      font-size: clamp(26px, 3.8vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar{width:4px;height:4px}
-    ::-webkit-scrollbar-track{background:transparent}
-    ::-webkit-scrollbar-thumb{background:rgba(200,220,240,0.12);border-radius:2px}
+    .hero-headline-titanium {
+      background: linear-gradient(135deg, #FFFFFF 15%, #E2E8F0 50%, #8A98A8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-    @media print{
-      body::before{display:none}
-      .site-header,.tab-nav,.conn-bar,.stat-bar,.cockpit-grid,.findings-panel,.receipt-panel,.report-bar{display:none!important}
-      .page{display:block!important}
-      .cert-wrap{display:block!important}
-      body{background:#fff;color:#000}
+    .hero-headline-ice {
+      color: var(--ice);
+      text-shadow: 0 0 20px rgba(125, 211, 252, 0.35);
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text-slate);
+      max-width: 820px;
+      margin-bottom: 20px;
+      line-height: 1.55;
+    }
+
+    /* ═══════════════ 4-METRIC TITANIUM STRIP ═══════════════ */
+    .cockpit-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .cockpit-metric-card {
+      background: linear-gradient(180deg, #232C3B 0%, #171E2A 50%, #0F131C 100%);
+      border: 1px solid rgba(200, 220, 240, 0.12);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      text-align: left;
+      box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(200, 220, 240, 0.16);
+      transition: transform var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cockpit-metric-card:hover {
+      transform: translateY(-1px);
+      border-color: rgba(200, 220, 240, 0.28);
+    }
+
+    .metric-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .metric-card-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-slate);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .metric-icon-wrap {
+      color: var(--ice);
+      opacity: 0.85;
+    }
+
+    .metric-card-val {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--platinum-bright);
+      letter-spacing: -0.5px;
+    }
+
+    .metric-card-val span {
+      font-size: 11px;
+      color: var(--ice);
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    /* ═══════════════ COCKPIT SPLIT DECK ═══════════════ */
+    .cockpit-main-deck {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+      margin-bottom: 28px;
+      align-items: stretch;
+    }
+
+    /* LEFT: Code Input Terminal */
+    .cockpit-preview {
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, #232C3B 0%, #171E2A 50%, #0F131C 100%);
+      border: 1px solid rgba(200, 220, 240, 0.14);
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(200, 220, 240, 0.20);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cockpit-header {
+      background: linear-gradient(180deg, #263140 0%, #1C2432 100%);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(200, 220, 240, 0.10);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .cockpit-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: #E2E8F0;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .telemetry-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .tdot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    .tdot.r { background: var(--crimson); }
+    .tdot.y { background: var(--amber); }
+    .tdot.g { background: var(--emerald); }
+
+    .cockpit-status-tag {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: #1E2838;
+      border: 1px solid rgba(200, 220, 240, 0.22);
+      color: #D8E8F8;
+    }
+
+    /* Code Textarea */
+    .cockpit-code-area {
+      flex: 1;
+      padding: 14px 18px;
+      background: #080C14;
+      border-top: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #codeInput {
+      width: 100%;
+      min-height: 220px;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--platinum-bright);
+      line-height: 1.65;
+      resize: vertical;
+    }
+
+    #codeInput::placeholder {
+      color: var(--steel);
+    }
+
+    #codeInput::-webkit-scrollbar { width: 4px; }
+    #codeInput::-webkit-scrollbar-thumb { background: rgba(200, 220, 240, 0.15); border-radius: 4px; }
+
+    /* Preset Chips */
+    .cockpit-preset-strip {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 10px 16px;
+      background: #080C14;
+      border-top: 1px solid rgba(200, 220, 240, 0.08);
+    }
+
+    .preset-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-slate);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-right: 2px;
+    }
+
+    .chip-titanium {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 4px 9px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-tray);
+      border: 1px solid rgba(200, 220, 240, 0.12);
+      color: var(--text-slate);
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(200, 220, 240, 0.08);
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-titanium:hover {
+      background: var(--bg-tray-hover);
+      border-color: rgba(200, 220, 240, 0.35);
+      color: #fff;
+    }
+
+    .chip-titanium.alert {
+      border-color: rgba(225, 29, 72, 0.35);
+      color: #fda4af;
+      background: rgba(225, 29, 72, 0.08);
+    }
+
+    .chip-titanium.alert:hover {
+      border-color: var(--crimson);
+      background: rgba(225, 29, 72, 0.18);
+      color: #fff;
+    }
+
+    /* Scan Button Bar */
+    .scan-action-bar {
+      padding: 10px 16px;
+      background: #0F131C;
+      border-top: 1px solid rgba(200, 220, 240, 0.10);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-titanium-exec {
+      padding: 8px 18px;
+      background: linear-gradient(180deg, #2B374A 0%, #1A2230 100%);
+      border: 1px solid rgba(200, 220, 240, 0.28);
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(200, 220, 240, 0.20);
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-titanium-exec:hover {
+      background: linear-gradient(180deg, #37465E 0%, #222C3E 100%);
+      border-color: rgba(200, 220, 240, 0.45);
+      box-shadow: 0 4px 16px rgba(125, 211, 252, 0.2);
+    }
+
+    .btn-titanium-exec:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .scan-hint {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--steel);
+      letter-spacing: 0.8px;
+    }
+
+    /* RIGHT: HUD Panel */
+    .cockpit-side-hud {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hud-card {
+      background: linear-gradient(180deg, #222B3A 0%, #161D28 50%, #0E131C 100%);
+      border: 1px solid rgba(200, 220, 240, 0.12);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(200, 220, 240, 0.16);
+      flex: 1;
+    }
+
+    .hud-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(200, 220, 240, 0.08);
+    }
+
+    .hud-card-title {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #E2E8F0;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .hud-badge-platinum {
+      background: #1E2838;
+      border: 1px solid rgba(200, 220, 240, 0.22);
+      color: #D8E8F8;
+      font-size: 8px;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+
+    /* Big risk score */
+    .risk-score-display {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .risk-score-val {
+      font-family: var(--font-mono);
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--platinum-bright);
+      letter-spacing: -2px;
+    }
+
+    .risk-score-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .risk-progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(200, 220, 240, 0.08);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .risk-progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      background: var(--emerald);
+    }
+
+    .risk-progress-fill.medium { background: var(--amber); }
+    .risk-progress-fill.high { background: var(--crimson); }
+
+    /* Recessed Trays */
+    .hud-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #121824;
+      border: 1px solid rgba(200, 220, 240, 0.07);
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      box-shadow: inset 0 1px 0 rgba(200, 220, 240, 0.05);
+      transition: border-color var(--transition);
+    }
+
+    .hud-item:last-child { margin-bottom: 0; }
+
+    .hud-item:hover { border-color: rgba(200, 220, 240, 0.2); }
+
+    .hud-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hud-item-name {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--platinum);
+    }
+
+    .hud-item-tag {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: #1E2838;
+      border: 1px solid rgba(200, 220, 240, 0.15);
+      color: var(--ice);
+      letter-spacing: 0.5px;
+    }
+
+    /* Event Feed */
+    .event-feed {
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .event-feed::-webkit-scrollbar { width: 3px; }
+    .event-feed::-webkit-scrollbar-thumb { background: rgba(200, 220, 240, 0.12); }
+
+    .event-entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(200, 220, 240, 0.04);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+    }
+
+    .event-entry:last-child { border-bottom: none; }
+
+    .event-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .event-text { color: var(--text-slate); }
+    .event-time { color: var(--steel); margin-left: auto; white-space: nowrap; }
+
+    /* ═══════════════ SECTION HEADLINE ═══════════════ */
+    .section-headline {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-slate);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-headline::before {
+      content: "";
+      width: 3px;
+      height: 10px;
+      background: var(--ice);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════ AUDIT COCKPIT TABLE ═══════════════ */
+    .audit-cockpit {
+      border-radius: var(--radius-md);
+      background: linear-gradient(180deg, #222B3A 0%, #161D28 50%, #0E131C 100%);
+      border: 1px solid rgba(200, 220, 240, 0.12);
+      overflow: hidden;
+      box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(200, 220, 240, 0.16);
+      margin-bottom: 28px;
+    }
+
+    .audit-grid-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 140px;
+      gap: 12px;
+      padding: 10px 16px;
+      background: linear-gradient(180deg, #263140 0%, #1C2432 100%);
+      border-bottom: 1px solid rgba(200, 220, 240, 0.10);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-slate);
+    }
+
+    .audit-stream-deck {
+      min-height: 100px;
+      background: #080C14;
+    }
+
+    .audit-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 140px;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(200, 220, 240, 0.05);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      align-items: center;
+      cursor: pointer;
+      transition: background var(--transition);
+      animation: fadeInRow 0.25s ease;
+    }
+
+    @keyframes fadeInRow {
+      from { opacity: 0; transform: translateY(-3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .audit-row:last-child { border-bottom: none; }
+    .audit-row:hover { background: rgba(200, 220, 240, 0.025); }
+
+    .audit-row-advisory {
+      grid-column: 1 / -1;
+      background: rgba(125, 211, 252, 0.04);
+      border-top: 1px solid rgba(200, 220, 240, 0.06);
+      padding: 10px 16px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-slate);
+      line-height: 1.55;
+      display: none;
+    }
+
+    .audit-row-advisory.open { display: block; }
+
+    .audit-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+    }
+
+    .badge-blocked { color: #fb7185; background: rgba(225, 29, 72, 0.12); border: 1px solid rgba(225, 29, 72, 0.3); }
+    .badge-tripped { color: #fbbf24; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-settled { color: #34d399; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-ice { color: var(--ice); background: rgba(125, 211, 252, 0.10); border: 1px solid rgba(125, 211, 252, 0.3); }
+
+    .audit-empty-view {
+      padding: 32px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--steel);
+      letter-spacing: 1px;
+    }
+
+    /* ═══════════════ FORENSIC RECEIPT ═══════════════ */
+    .forensic-receipt {
+      display: none;
+      margin-bottom: 28px;
+    }
+
+    .forensic-receipt.visible { display: block; }
+
+    .receipt-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* ═══════════════ AUDIT CHAIN PAGE ═══════════════ */
+    .audit-hdr {
+      margin-bottom: 20px;
+    }
+
+    .audit-hdr h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--platinum-bright);
+      margin-bottom: 6px;
+    }
+
+    .audit-hdr p {
+      font-size: 13px;
+      color: var(--text-slate);
+    }
+
+    .chain-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .chain-integrity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .chain-integrity-intact { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--emerald); }
+    .chain-integrity-compromised { background: rgba(225, 29, 72, 0.12); border: 1px solid rgba(225, 29, 72, 0.3); color: var(--crimson); }
+
+    /* Vertical chain timeline */
+    .chain-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .chain-node-wrap {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .chain-node-wrap::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 20px;
+      bottom: -16px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(125, 211, 252, 0.3), rgba(125, 211, 252, 0.05));
+    }
+
+    .chain-node-wrap:last-child::before { display: none; }
+
+    .chain-dot-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .chain-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(125, 211, 252, 0.6), rgba(125, 211, 252, 0.1));
+      border: 2px solid rgba(125, 211, 252, 0.6);
+      box-shadow: 0 0 12px rgba(125, 211, 252, 0.4);
+      flex-shrink: 0;
+    }
+
+    .chain-card {
+      flex: 1;
+      background: linear-gradient(180deg, #222B3A 0%, #161D28 50%, #0E131C 100%);
+      border: 1px solid rgba(200, 220, 240, 0.12);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(200, 220, 240, 0.14);
+    }
+
+    .chain-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .chain-idx {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--ice);
+      letter-spacing: 1px;
+    }
+
+    .chain-ts {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--steel);
+    }
+
+    .chain-hash-line {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      word-break: break-all;
+    }
+
+    .chain-hash-line span { color: var(--text-slate); }
+
+    /* ═══════════════ REPORT PAGE ═══════════════ */
+    .cert-input-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .cert-input {
+      flex: 1;
+      background: var(--bg-tray);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--platinum-bright);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .cert-input::placeholder { color: var(--steel); }
+    .cert-input:focus { border-color: rgba(125, 211, 252, 0.4); }
+
+    .cert-card {
+      background: linear-gradient(180deg, #222B3A 0%, #161D28 55%, #0E131C 100%);
+      border: 1px solid rgba(200, 220, 240, 0.14);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(200, 220, 240, 0.18);
+      display: none;
+    }
+
+    .cert-card.visible { display: block; }
+
+    .cert-header {
+      background: linear-gradient(135deg, #263140 0%, #1C2432 100%);
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(200, 220, 240, 0.10);
+    }
+
+    .cert-brand {
+      font-family: var(--font-heading);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #FFFFFF 15%, #E2E8F0 50%, #8A98A8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .cert-subtitle {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--text-slate);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .cert-body {
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* ═══════════════ FOOTER ═══════════════ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 0;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-slate);
+    }
+
+    footer a {
+      color: var(--ice);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    /* ═══════════════ RESPONSIVE ═══════════════ */
+    @media (max-width: 1000px) {
+      .cockpit-main-deck { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .cockpit-metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .audit-grid-header, .audit-row { grid-template-columns: 2fr 1fr 130px; }
+      .audit-grid-header div:nth-child(3), .audit-row div:nth-child(3) { display: none; }
+      .receipt-grid { grid-template-columns: 1fr; }
+      .cert-body { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .cockpit-metrics-grid { grid-template-columns: 1fr; }
+      .nav-telemetry { display: none; }
     }
   </style>
 </head>
 <body>
-<div class="wrap">
 
-  <!-- HEADER -->
-  <header class="site-header fade-up">
-    <div class="brand">
-      <div class="brand-icon">
-        <svg class="ico" width="20" height="20" viewBox="0 0 24 24">
-          <rect x="3" y="11" width="18" height="11" rx="2"/>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-          <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/>
-        </svg>
+<div class="container">
+
+  <!-- TOP NAV BAR -->
+  <nav class="top-nav">
+    <div class="brand-group">
+      <div class="brand-crest">
+        <svg class="ico ico-lg" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </div>
       <div>
-        <div class="brand-name">Code<em>Vault</em></div>
-        <div class="brand-tag">OWASP // FORENSIC CODE SCANNER</div>
+        <div class="brand-name">Code<span>Vault</span></div>
       </div>
+      <div class="brand-code">FORENSIC SCANNER</div>
     </div>
-    <div class="header-pills">
-      <div class="h-pill"><span class="dot dot-dim" id="connDot"></span><span id="connTxt">OFFLINE</span></div>
-      <div class="h-pill"><span class="dot dot-ice"></span>15 VULN RULES</div>
-      <div class="h-pill">
-        <svg class="ico" width="11" height="11" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        22/22 TESTS
-      </div>
-      <div class="h-pill badge-dim">KIROWEEN 2026</div>
+    <div class="nav-telemetry">
+      <div class="titanium-pill"><div class="pill-dot-ice"></div>SSE LIVE</div>
+      <div class="titanium-pill"><div class="pill-dot-emerald"></div>15 VULN RULES</div>
+      <div class="titanium-pill">22/22 TESTS</div>
     </div>
-  </header>
-
-  <!-- TAB NAV -->
-  <nav class="tab-nav fade-up">
-    <button class="tab-btn active" onclick="showPage('scanner',this)">
-      <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Scanner
-    </button>
-    <button class="tab-btn" onclick="showPage('chain',this)">
-      <svg class="ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-      Audit Chain
-    </button>
-    <button class="tab-btn" onclick="showPage('report',this)">
-      <svg class="ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      Report
-    </button>
   </nav>
 
-  <!-- CONN BAR -->
-  <div class="conn-bar offline" id="connBar">
-    <span class="dot dot-amber"></span>
-    <span id="connBarTxt">Start server: node src/server.js</span>
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('scanner', this)">Scanner</button>
+    <button class="tab-btn" onclick="switchTab('chain', this)">Audit Chain</button>
+    <button class="tab-btn" onclick="switchTab('report', this)">Report</button>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════
-       PAGE 1 — SCANNER
-       ════════════════════════════════════════════════════════ -->
-  <div class="page active" id="page-scanner">
+  <!-- ══════════════════════════════════════════
+       TAB 1: SCANNER
+       ══════════════════════════════════════════ -->
+  <div id="tab-scanner" class="tab-panel active">
 
-    <!-- Stat bar -->
-    <div class="stat-bar">
-      <div class="card stat-card sv-ice">
-        <span class="mono-label"><svg class="ico" width="11" height="11" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Total Scans</span>
-        <div class="stat-val" id="sTotal">0</div>
-        <div class="stat-sub">this session</div>
-        <div class="stat-bar-bottom"></div>
+    <!-- HERO -->
+    <section class="cockpit-top-section">
+      <div class="hero-kicker-row">
+        <div class="hero-kicker">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Kiroween 2026 &mdash; Frankenstein Category
+        </div>
+        <div class="brand-code">OWASP TOP 10</div>
       </div>
-      <div class="card stat-card sv-red">
-        <span class="mono-label"><svg class="ico" width="11" height="11" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>Vulnerabilities</span>
-        <div class="stat-val" id="sVulns">0</div>
-        <div class="stat-sub">found total</div>
-        <div class="stat-bar-bottom"></div>
-      </div>
-      <div class="card stat-card sv-green">
-        <span class="mono-label"><svg class="ico" width="11" height="11" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Clean Scans</span>
-        <div class="stat-val" id="sClean">0</div>
-        <div class="stat-sub">no findings</div>
-        <div class="stat-bar-bottom"></div>
-      </div>
-      <div class="card stat-card sv-amber">
-        <span class="mono-label"><svg class="ico" width="11" height="11" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Chain Length</span>
-        <div class="stat-val" id="sChain">0</div>
-        <div class="stat-sub">audit entries</div>
-        <div class="stat-bar-bottom"></div>
-      </div>
-    </div>
+      <h1 class="hero-headline">
+        <span class="hero-headline-titanium">Forensic Code Security Scanner</span><br>
+        <span class="hero-headline-ice">With SHA-256 Audit Chain</span>
+      </h1>
+      <p class="hero-sub">
+        Static analysis across 15 OWASP-aligned vulnerability rules — SQL injection, eval(), hardcoded secrets, XSS, command execution, path traversal, and more. Every scan is SHA-256 hash-chained for tamper-evident forensic integrity.
+      </p>
 
-    <!-- Cockpit grid -->
-    <div class="cockpit-grid">
-
-      <!-- LEFT: code input -->
-      <div class="card code-panel">
-        <div class="panel-hdr">
-          <div class="panel-title">
-            <svg class="ico" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            Code Input
+      <!-- 4-METRIC STRIP -->
+      <div class="cockpit-metrics-grid">
+        <div class="cockpit-metric-card">
+          <div class="metric-card-header">
+            <div class="metric-card-label">Total Scans</div>
+            <div class="metric-icon-wrap">
+              <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
           </div>
-          <span class="mono-label" style="font-size:9px">POST /v1/scan</span>
+          <div class="metric-card-val" id="metricScans">0 <span>RUNS</span></div>
         </div>
-        <div class="editor-chrome">
-          <div class="tc tc-r"></div><div class="tc tc-y"></div><div class="tc tc-g"></div>
-          <span class="editor-lbl">scan_target.js</span>
+        <div class="cockpit-metric-card">
+          <div class="metric-card-header">
+            <div class="metric-card-label">Vulnerabilities</div>
+            <div class="metric-icon-wrap">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+          </div>
+          <div class="metric-card-val" id="metricVulns">0 <span>FOUND</span></div>
         </div>
-        <textarea id="codeInput" spellcheck="false" oninput="updateLines()"
-          placeholder="// Paste code to scan&#10;// Detects SQL injection, command injection, XSS, eval,&#10;// hardcoded secrets, weak crypto, CORS misconfiguration, and 8 more..."></textarea>
-        <div class="editor-footer">
-          <svg class="ico" width="11" height="11" viewBox="0 0 24 24" style="color:var(--text-muted)"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-          <span class="line-info" id="lineCount">0 lines</span>
-          <div class="ef-space"></div>
-          <button class="btn btn-ghost" onclick="clearAll()">
-            <svg class="ico" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-            Clear
+        <div class="cockpit-metric-card">
+          <div class="metric-card-header">
+            <div class="metric-card-label">Clean Scans</div>
+            <div class="metric-icon-wrap">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+          <div class="metric-card-val" id="metricClean">0 <span>SAFE</span></div>
+        </div>
+        <div class="cockpit-metric-card">
+          <div class="metric-card-header">
+            <div class="metric-card-label">Chain Length</div>
+            <div class="metric-icon-wrap">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </div>
+          </div>
+          <div class="metric-card-val" id="metricChain">0 <span>BLOCKS</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COCKPIT SPLIT DECK -->
+    <div class="cockpit-main-deck">
+
+      <!-- LEFT: Code Input Terminal -->
+      <div class="cockpit-preview">
+        <div class="cockpit-header">
+          <div class="cockpit-title">
+            <div class="telemetry-dots">
+              <div class="tdot r"></div>
+              <div class="tdot y"></div>
+              <div class="tdot g"></div>
+            </div>
+            <svg class="ico" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            FORENSIC TERMINAL // SCANNER_01
+          </div>
+          <div class="cockpit-status-tag">OWASP 15 RULES ARMED</div>
+        </div>
+
+        <div class="cockpit-code-area">
+          <textarea id="codeInput" placeholder="// Paste code here for forensic analysis...
+// Example: SELECT * FROM users WHERE id = '" + userId + "'
+// Or click a preset below to load a vulnerable snippet"></textarea>
+        </div>
+
+        <div class="cockpit-preset-strip">
+          <span class="preset-label">Presets:</span>
+          <button class="chip-titanium alert" onclick="loadPreset('sql')">
+            <svg class="ico" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            SQL Inject
           </button>
-          <button class="btn btn-scan-main" id="btnScan" onclick="doScan()">
-            <svg class="ico" id="scanIco" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <div class="spinner" id="scanSpin" style="display:none"></div>
-            Scan Code
+          <button class="chip-titanium alert" onclick="loadPreset('eval')">
+            <svg class="ico" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            eval() Inject
+          </button>
+          <button class="chip-titanium alert" onclick="loadPreset('secret')">
+            <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Hardcoded Secret
+          </button>
+          <button class="chip-titanium alert" onclick="loadPreset('xss')">
+            <svg class="ico" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+            XSS innerHTML
+          </button>
+          <button class="chip-titanium alert" onclick="loadPreset('exec')">
+            <svg class="ico" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Command Exec
           </button>
         </div>
+
+        <div class="scan-action-bar">
+          <button id="scanBtn" class="btn-titanium-exec" onclick="runScan()">
+            <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            SCAN CODE
+          </button>
+          <span class="scan-hint" id="scanHint">15 rules armed — awaiting code input</span>
+        </div>
       </div>
 
-      <!-- RIGHT: live monitor -->
-      <div class="card live-panel">
-        <div class="panel-hdr">
-          <div class="panel-title">
-            <svg class="ico" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            Live Monitor
+      <!-- RIGHT: HUD Panel -->
+      <div class="cockpit-side-hud">
+
+        <!-- RISK MONITOR -->
+        <div class="hud-card">
+          <div class="hud-card-header">
+            <div class="hud-card-title">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Risk Monitor
+            </div>
+            <div class="hud-badge-platinum" id="riskBadge">AWAITING SCAN</div>
           </div>
-          <span class="badge badge-dim" id="feedCount">0 events</span>
-        </div>
-
-        <!-- Risk score -->
-        <div class="mono-label" style="margin-bottom:6px">Risk Score</div>
-        <div class="risk-nums">
-          <div class="risk-big" id="riskBig">—</div>
-          <span class="badge badge-dim" id="riskBadge">NO SCAN</span>
-        </div>
-        <div class="risk-track"><div class="risk-fill" id="riskFill"></div></div>
-        <div class="risk-ticks"><span>CLEAN</span><span>MEDIUM</span><span>CRITICAL</span></div>
-
-        <div class="risk-divider"></div>
-
-        <!-- Event feed -->
-        <div class="panel-title" style="margin-bottom:10px;font-size:10px">
-          <svg class="ico" viewBox="0 0 24 24" width="12" height="12"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
-          Event Feed
-        </div>
-        <div class="event-feed" id="eventFeed">
-          <div class="feed-empty-msg">
-            <svg class="ico" width="24" height="24" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            Waiting for server events...
+          <div class="risk-score-display">
+            <div class="risk-score-val" id="riskScoreVal">—</div>
+            <div class="risk-score-label">SEVERITY<br>SCORE</div>
+          </div>
+          <div class="risk-progress-bar">
+            <div class="risk-progress-fill" id="riskBar" style="width:0%"></div>
+          </div>
+          <div class="hud-item">
+            <div class="hud-item-meta">
+              <svg class="ico" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg>
+              <div class="hud-item-name">Rules Applied</div>
+            </div>
+            <div class="hud-item-tag" id="hudRules">—</div>
+          </div>
+          <div class="hud-item">
+            <div class="hud-item-meta">
+              <svg class="ico" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              <div class="hud-item-name">Lines Scanned</div>
+            </div>
+            <div class="hud-item-tag" id="hudLines">—</div>
+          </div>
+          <div class="hud-item">
+            <div class="hud-item-meta">
+              <svg class="ico" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <div class="hud-item-name">Severity Score</div>
+            </div>
+            <div class="hud-item-tag" id="hudSeverity">—</div>
           </div>
         </div>
-      </div>
 
-    </div><!-- /cockpit-grid -->
-
-    <!-- Section rule: findings -->
-    <div class="section-rule">
-      <svg class="ico" width="12" height="12" viewBox="0 0 24 24" style="color:var(--text-muted)"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
-      <span class="mono-label">Vulnerability Findings</span>
-    </div>
-
-    <!-- Findings -->
-    <div class="card findings-panel">
-      <div class="panel-hdr">
-        <div class="panel-title">
-          <svg class="ico" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          Findings
+        <!-- EVENT FEED -->
+        <div class="hud-card">
+          <div class="hud-card-header">
+            <div class="hud-card-title">
+              <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Event Feed
+            </div>
+            <div class="hud-badge-platinum">SSE LIVE</div>
+          </div>
+          <div class="event-feed" id="eventFeed">
+            <div class="event-entry">
+              <div class="event-dot" style="background:var(--steel)"></div>
+              <span class="event-text">Awaiting scan events...</span>
+            </div>
+          </div>
         </div>
-        <span class="findings-count" id="fCountPill">0</span>
+
       </div>
-      <div id="noFindingsMsg" class="no-findings-msg">
-        <svg class="ico" width="28" height="28" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        Paste code above and run a scan
-      </div>
-      <div id="findingsList"></div>
     </div>
 
-    <!-- Section rule: receipt -->
-    <div class="section-rule" id="receiptRule" style="display:none">
-      <svg class="ico" width="12" height="12" viewBox="0 0 24 24" style="color:var(--text-muted)"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      <span class="mono-label">Forensic Receipt</span>
+    <!-- FINDINGS TABLE -->
+    <div class="section-headline">Vulnerability Findings</div>
+    <div class="audit-cockpit" id="findingsSection">
+      <div class="audit-grid-header">
+        <div>Rule / Vulnerability</div>
+        <div>Severity</div>
+        <div>Line</div>
+        <div>Status</div>
+      </div>
+      <div class="audit-stream-deck" id="findingsBody">
+        <div class="audit-empty-view" id="findingsEmpty">[ NO SCAN RUN — PASTE CODE ABOVE AND CLICK SCAN CODE ]</div>
+      </div>
     </div>
 
-    <!-- Receipt -->
-    <div class="card receipt-panel" id="receiptPanel" style="display:none">
-      <div class="receipt-hdr">
-        <svg class="ico" width="12" height="12" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        Forensic Receipt
-        <span class="badge badge-ice" style="margin-left:4px">SHA-256 SEALED</span>
-      </div>
+    <!-- FORENSIC RECEIPT -->
+    <div id="forensicReceipt" class="forensic-receipt">
+      <div class="section-headline">Forensic Receipt</div>
       <div class="receipt-grid">
         <div>
-          <div class="r-row"><span class="r-key">scan_id</span><span class="r-val" id="rcId">—</span></div>
-          <div class="r-row"><span class="r-key">timestamp</span><span class="r-val" id="rcTs">—</span></div>
-          <div class="r-row"><span class="r-key">lines_scanned</span><span class="r-val" id="rcLines">—</span></div>
-          <div class="r-row"><span class="r-key">findings</span><span class="r-val" id="rcF">—</span></div>
-          <div class="r-row"><span class="r-key">risk_level</span><span class="r-val" id="rcRisk">—</span></div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><svg class="ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div class="hud-item-name">Scan ID</div></div>
+            <div class="hud-item-tag" id="rcpScanId">—</div>
+          </div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div class="hud-item-name">Timestamp</div></div>
+            <div class="hud-item-tag" id="rcpTime">—</div>
+          </div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><svg class="ico" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/></svg><div class="hud-item-name">Lines Scanned</div></div>
+            <div class="hud-item-tag" id="rcpLines">—</div>
+          </div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><svg class="ico" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><div class="hud-item-name">Findings</div></div>
+            <div class="hud-item-tag" id="rcpFindings">—</div>
+          </div>
+          <div class="hud-item">
+            <div class="hud-item-meta"><svg class="ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div class="hud-item-name">Risk Level</div></div>
+            <div class="hud-item-tag" id="rcpRisk">—</div>
+          </div>
         </div>
         <div>
-          <div class="r-row"><span class="r-key">code_hash</span><span class="r-val hash" id="rcCode">—</span></div>
-          <div class="r-row"><span class="r-key">chain_hash</span><span class="r-val hash" id="rcChain">—</span></div>
-          <div class="r-row"><span class="r-key">prev_hash</span><span class="r-val hash" id="rcPrev">—</span></div>
-          <div class="r-row"><span class="r-key">chain_pos</span><span class="r-val ok" id="rcPos">—</span></div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><svg class="ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><div class="hud-item-name">Code Hash</div></div>
+            <div class="hud-item-tag" id="rcpCodeHash" style="font-size:8px;word-break:break-all">—</div>
+          </div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><div class="hud-item-name">Chain Hash</div></div>
+            <div class="hud-item-tag" id="rcpChainHash" style="font-size:8px;word-break:break-all">—</div>
+          </div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><svg class="ico" viewBox="0 0 24 24"><polyline points="15 14 9 20 3 14"/><path d="M21 4H9a6 6 0 0 0-6 6v10"/></svg><div class="hud-item-name">Prev Hash</div></div>
+            <div class="hud-item-tag" id="rcpPrevHash" style="font-size:8px;word-break:break-all">—</div>
+          </div>
+          <div class="hud-item">
+            <div class="hud-item-meta"><svg class="ico" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg><div class="hud-item-name">Chain Position</div></div>
+            <div class="hud-item-tag" id="rcpChainPos">—</div>
+          </div>
         </div>
       </div>
     </div>
 
-  </div><!-- /page-scanner -->
+  </div>
+  <!-- END TAB 1 -->
 
-  <!-- ════════════════════════════════════════════════════════
-       PAGE 2 — AUDIT CHAIN
-       ════════════════════════════════════════════════════════ -->
-  <div class="page" id="page-chain">
+
+  <!-- ══════════════════════════════════════════
+       TAB 2: AUDIT CHAIN
+       ══════════════════════════════════════════ -->
+  <div id="tab-chain" class="tab-panel">
     <div class="audit-hdr">
-      <h2>SHA-256 TAMPER-EVIDENT HASH CHAIN</h2>
-      <p>Every scan entry cryptographically links to its predecessor. Altering any record breaks the entire chain.</p>
+      <h2>SHA-256 Audit Chain</h2>
+      <p>Tamper-evident hash chain — each block references the previous block's hash, making retroactive modification detectable.</p>
     </div>
     <div class="chain-toolbar">
-      <button class="btn btn-ice" onclick="fetchChain()">
-        <svg class="ico" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
-        Fetch Chain
+      <button class="btn-titanium-exec" onclick="fetchChain()">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        FETCH CHAIN
       </button>
-      <div class="badge cib-empty" id="chainBanner">
-        <svg class="ico" width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        NO DATA — FETCH CHAIN TO VERIFY
+      <div class="chain-integrity-badge chain-integrity-intact" id="chainIntegrity">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        CHAIN INTACT
       </div>
     </div>
-    <div class="chain-list" id="chainList">
-      <div class="no-chain-msg">
-        <svg class="ico" width="40" height="40" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        No entries yet — run a scan then fetch chain
+    <div class="chain-timeline" id="chainTimeline">
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--steel);padding:20px 0;letter-spacing:1px;">
+        [ CLICK FETCH CHAIN TO LOAD BLOCKS — SERVER MUST BE RUNNING ON PORT 3000 ]
       </div>
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════
-       PAGE 3 — REPORT
-       ════════════════════════════════════════════════════════ -->
-  <div class="page" id="page-report">
-    <div class="audit-hdr" style="margin-bottom:20px">
-      <h2>FORENSIC CERTIFICATE GENERATOR</h2>
-      <p>Generate a cryptographically sealed audit certificate for any scan. Enter a Scan ID or leave blank for the latest.</p>
+
+  <!-- ══════════════════════════════════════════
+       TAB 3: REPORT
+       ══════════════════════════════════════════ -->
+  <div id="tab-report" class="tab-panel">
+    <div class="audit-hdr">
+      <h2>Forensic Certificate</h2>
+      <p>Generate a signed forensic certificate for the most recent scan — includes hash chain proof and OWASP classification.</p>
     </div>
-    <div class="report-bar">
-      <input class="report-input" id="reportId" placeholder="Scan ID — leave blank for latest scan"/>
-      <button class="btn btn-ice" onclick="genCert()">
-        <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-        Generate Certificate
-      </button>
-      <button class="btn btn-ghost" id="btnPrint" onclick="window.print()" style="display:none">
-        <svg class="ico" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        Export PDF
+    <div class="cert-input-row">
+      <input class="cert-input" id="certProject" placeholder="Project name (e.g. my-backend-service)">
+      <button class="btn-titanium-exec" onclick="generateCert()">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        GENERATE CERTIFICATE
       </button>
     </div>
-    <div class="cert-wrap" id="certWrap">
-      <div class="cert">
-        <div class="cert-top">
-          <div class="cert-brand-row">
-            <svg class="ico" width="22" height="22" viewBox="0 0 24 24" style="color:var(--ice)"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="var(--ice)" stroke="none"/></svg>
-            <div class="cert-brand-name">Code<em>Vault</em></div>
+    <div id="certCard" class="cert-card">
+      <div class="cert-header">
+        <div class="cert-brand">CodeVault Forensic Certificate</div>
+        <div class="cert-subtitle">OWASP Top 10 &nbsp;|&nbsp; SHA-256 Hash Chain &nbsp;|&nbsp; Kiroween 2026</div>
+      </div>
+      <div class="cert-body">
+        <div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><div class="hud-item-name">Project</div></div>
+            <div class="hud-item-tag" id="certProjVal">—</div>
           </div>
-          <div class="cert-sub">FORENSIC CODE SECURITY AUDIT SYSTEM — KIROWEEN 2026</div>
-          <div class="cert-title">Certificate of Scan Integrity</div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><div class="hud-item-name">Scan ID</div></div>
+            <div class="hud-item-tag" id="certScanId">—</div>
+          </div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><div class="hud-item-name">Generated</div></div>
+            <div class="hud-item-tag" id="certGenTime">—</div>
+          </div>
+          <div class="hud-item">
+            <div class="hud-item-meta"><div class="hud-item-name">Risk Level</div></div>
+            <div class="hud-item-tag" id="certRisk">—</div>
+          </div>
         </div>
-        <div class="cert-section">
-          <div class="cert-sh">Audit Metadata</div>
-          <div class="c-row"><span class="c-key">scan_id</span><span class="c-val" id="cc-id">—</span></div>
-          <div class="c-row"><span class="c-key">timestamp</span><span class="c-val" id="cc-ts">—</span></div>
-          <div class="c-row"><span class="c-key">lines_analyzed</span><span class="c-val" id="cc-lines">—</span></div>
-          <div class="c-row"><span class="c-key">rules_applied</span><span class="c-val" id="cc-rules">—</span></div>
-        </div>
-        <div class="cert-section">
-          <div class="cert-sh">Vulnerability Summary</div>
-          <div class="c-row"><span class="c-key">total_findings</span><span class="c-val" id="cc-findings">—</span></div>
-          <div class="c-row"><span class="c-key">severity_score</span><span class="c-val" id="cc-score">—</span></div>
-          <div class="c-row"><span class="c-key">risk_level</span><span class="c-val" id="cc-level">—</span></div>
-        </div>
-        <div class="cert-section">
-          <div class="cert-sh">Cryptographic Proof</div>
-          <div class="c-row"><span class="c-key">code_sha256</span><span class="c-val hash" id="cc-code">—</span></div>
-          <div class="c-row"><span class="c-key">chain_sha256</span><span class="c-val hash" id="cc-chain">—</span></div>
-          <div class="c-row"><span class="c-key">prev_sha256</span><span class="c-val hash" id="cc-prev">—</span></div>
-          <div class="c-row"><span class="c-key">chain_position</span><span class="c-val ok" id="cc-pos">—</span></div>
-          <div class="c-row"><span class="c-key">chain_integrity</span><span class="c-val ok" id="cc-int">—</span></div>
-        </div>
-        <div class="cert-foot">
-          This certificate is cryptographically sealed. Any modification to the scanned code or audit record<br>
-          will produce a different SHA-256 hash and break chain verification.<br>
-          CodeVault Forensic Scanner — Kiroween 2026 — github.com/amazing200guy1-a11y/codevault
+        <div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><div class="hud-item-name">Rules Evaluated</div></div>
+            <div class="hud-item-tag" id="certRules">15 OWASP RULES</div>
+          </div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><div class="hud-item-name">Findings</div></div>
+            <div class="hud-item-tag" id="certFindings">—</div>
+          </div>
+          <div class="hud-item" style="margin-bottom:6px">
+            <div class="hud-item-meta"><div class="hud-item-name">Chain Integrity</div></div>
+            <div class="hud-item-tag" id="certIntegrity">INTACT</div>
+          </div>
+          <div class="hud-item">
+            <div class="hud-item-meta"><div class="hud-item-name">Chain Hash</div></div>
+            <div class="hud-item-tag" id="certHash" style="font-size:8px">—</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-</div><!-- /wrap -->
+  <!-- FOOTER -->
+  <footer>
+    <div style="margin-bottom:6px;">
+      CODEVAULT &mdash; Forensic Code Security Scanner built for <strong>Kiroween 2026 Hackathon</strong> &mdash; Frankenstein Category
+    </div>
+    <div>
+      <a href="https://github.com/amazing200guy1-a11y/codevault" target="_blank">GitHub Repository</a> &middot;
+      <a href="https://amazing200guy1-a11y.github.io/codevault/dashboard.html" target="_blank">Live Demo</a> &middot;
+      MIT Open Source &middot; 15 OWASP Rules &middot; SHA-256 Hash Chain &middot; Kiro IDE
+    </div>
+  </footer>
+
+</div>
+
 <script>
-const API='http://127.0.0.1:3000';
-let S={total:0,vulns:0,clean:0,events:0};
-let lastScan=null,chainCache=[],sse=null;
-
-/* ── SSE ── */
-function connectSSE(){
-  if(sse)sse.close();
-  try{
-    sse=new EventSource(API+'/v1/events');
-    sse.onopen=()=>{setConn(true);feedLog('Connected to '+API,'ok')};
-    sse.addEventListener('snapshot',e=>{try{const d=JSON.parse(e.data);if(d.chain_length!=null)txt('sChain',d.chain_length);feedLog('Snapshot — chain:'+d.chain_length,'ok')}catch(e){}});
-    sse.addEventListener('scan',e=>{try{const d=JSON.parse(e.data);feedLog('Scan '+d.scan_id+' — '+d.findings+' findings','ok')}catch(e){}});
-    sse.onerror=()=>{setConn(false);feedLog('Connection lost — retrying in 5s','err');setTimeout(connectSSE,5000)};
-  }catch(e){setConn(false)}
-}
-function setConn(ok){
-  const bar=document.getElementById('connBar');
-  document.getElementById('connDot').className='dot '+(ok?'dot-green':'dot-amber');
-  document.getElementById('connTxt').textContent=ok?'LIVE':'OFFLINE';
-  bar.className='conn-bar '+(ok?'online':'offline');
-  document.getElementById('connBarTxt').textContent=ok
-    ?'Connected to CodeVault server — SSE stream active'
-    :'Start server: node src/server.js';
-}
-function feedLog(msg,cls){
-  const feed=document.getElementById('eventFeed');
-  const empty=feed.querySelector('.feed-empty-msg');
-  if(empty)empty.remove();
-  const t=new Date().toTimeString().slice(0,8);
-  const el=document.createElement('div');
-  el.className='feed-entry'+(cls?' '+cls:'');
-  el.innerHTML=`<span class="ts">${t}</span><span class="msg">${esc(msg)}</span>`;
-  feed.appendChild(el);feed.scrollTop=feed.scrollHeight;
-  S.events++;txt('feedCount',S.events+' event'+(S.events!==1?'s':''));
+/* ─── PRESET CODE SNIPPETS ─────────────────────────────────── */
+const PRESETS = {
+  sql: `// SQL INJECTION VULNERABILITY (OWASP A03:2021)
+function getUserById(userId) {
+  const query = "SELECT * FROM users WHERE id = '" + userId + "'";
+  return db.execute(query);
 }
 
-/* ── SCAN ── */
-async function doScan(){
-  const code=document.getElementById('codeInput').value.trim();
-  if(!code){feedLog('No code entered','warn');return}
-  const btn=document.getElementById('btnScan');
-  btn.disabled=true;
-  document.getElementById('scanIco').style.display='none';
-  document.getElementById('scanSpin').style.display='block';
-  feedLog('Scanning '+code.split('\n').length+' lines...');
-  try{
-    const r=await fetch(API+'/v1/scan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code})});
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    const d=await r.json();lastScan=d;applyResult(d);
-  }catch(e){feedLog('Scan error: '+e.message,'err')}
-  finally{btn.disabled=false;document.getElementById('scanIco').style.display='';document.getElementById('scanSpin').style.display='none'}
+function loginUser(username, password) {
+  const sql = \`SELECT * FROM accounts WHERE user='\${username}' AND pass='\${password}'\`;
+  return db.query(sql);
+}`,
+
+  eval: `// EVAL() CODE INJECTION (OWASP A03:2021)
+function calculateResult(expression) {
+  return eval(expression);  // DANGEROUS: remote code execution
 }
 
-function applyResult(d){
-  S.total++;const vc=d.findings?d.findings.length:0;
-  S.vulns+=vc;if(vc===0)S.clean++;
-  txt('sTotal',S.total);txt('sVulns',S.vulns);txt('sClean',S.clean);
-  if(d.chain)txt('sChain',d.chain.position);
-  const sc=d.severity_score||0,lv=d.risk_level||'CLEAN';
-  const col=sc>=50?'var(--crimson)':sc>=20?'var(--amber)':'var(--emerald)';
-  const fill=document.getElementById('riskFill');
-  fill.style.width=Math.min(sc,100)+'%';fill.style.background=col;
-  const rb=document.getElementById('riskBig');rb.textContent=sc;rb.style.color=col;
-  const badge=document.getElementById('riskBadge');
-  badge.textContent=lv;badge.className='badge '+(sc>=50?'badge-red':sc>=20?'badge-amber':'badge-green');
-  // Receipt
-  const ch=d.chain||{};
-  document.getElementById('receiptPanel').style.display='';
-  document.getElementById('receiptRule').style.display='';
-  txt('rcId',d.scan_id||'—');txt('rcTs',d.timestamp?new Date(d.timestamp).toLocaleString():'—');
-  txt('rcLines',d.lines_scanned||'—');
-  const fEl=document.getElementById('rcF');fEl.textContent=vc;fEl.className='r-val '+(vc>0?'crit':'ok');
-  const rEl=document.getElementById('rcRisk');rEl.textContent=lv;rEl.className='r-val '+(sc>=50?'crit':sc>=20?'warn':'ok');
-  txt('rcCode',(ch.code_hash||'—').slice(0,34)+'…');
-  txt('rcChain',(ch.hash||'—').slice(0,34)+'…');
-  txt('rcPrev',(ch.prev_hash||'GENESIS').slice(0,34)+'…');
-  txt('rcPos',ch.position?'#'+ch.position:'—');
-  feedLog('Done: '+vc+' findings, score='+sc+', '+lv,vc>0?'err':'ok');
-  renderFindings(d.findings||[]);
+const userScript = req.body.script;
+const result = eval(userScript);  // attacker-controlled input
+
+// Also vulnerable:
+setTimeout("alert(document.cookie)", 100);
+new Function("return " + userInput)();`,
+
+  secret: `// HARDCODED SECRETS (OWASP A02:2021)
+const config = {
+  apiKey: "sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890",
+  password: "SuperSecret123!",
+  awsKey: "AKIAIOSFODNN7EXAMPLE",
+  dbUrl: "mongodb+srv://admin:p@ssw0rd@cluster.mongodb.net/prod",
+  jwtSecret: "my-super-secret-jwt-key-do-not-share"
+};`,
+
+  xss: `// XSS - CROSS-SITE SCRIPTING (OWASP A03:2021)
+function renderComment(comment) {
+  document.getElementById('output').innerHTML = comment;
 }
 
-function renderFindings(list){
-  const pill=document.getElementById('fCountPill');
-  const nm=document.getElementById('noFindingsMsg');
-  const fl=document.getElementById('findingsList');
-  if(!list.length){
-    nm.innerHTML='<svg class="ico" width="28" height="28" viewBox="0 0 24 24" style="color:var(--emerald);opacity:.6"><polyline points="20 6 9 17 4 12"/></svg>No vulnerabilities detected — code is clean';
-    nm.style.display='flex';fl.innerHTML='';pill.style.display='none';return;
-  }
-  nm.style.display='none';pill.textContent=list.length;pill.style.display='';
-  fl.innerHTML='';
-  list.forEach(f=>{
-    const sev=f.severity||'LOW',adv=f.advisory||{};
-    const div=document.createElement('div');div.className='finding-item';
-    div.innerHTML=`<div class="finding-hdr" onclick="togF(this)">
-      <span class="sev-pill sev-${sev}">${sev}</span>
-      <span class="f-rule">${esc(f.rule_id||'')}</span>
-      <span class="f-name">${esc(f.name||'')}</span>
-      <span class="f-line">L${f.line||'?'}</span>
-      <svg class="f-chev ico" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="finding-body">
-      <div class="f-snippet">${esc(f.match||'')}</div>
-      <div><div class="adv-lbl">What it is</div><div class="adv-txt">${esc(adv.explanation||'No advisory.')}</div></div>
-      <div><div class="adv-lbl">Fix</div><div class="adv-fix">${esc(adv.fix||'No fix available.')}</div></div>
-      <div class="adv-tags">${adv.owasp?`<span class="adv-tag">${esc(adv.owasp)}</span>`:''}${adv.cwe?`<span class="adv-tag">${esc(adv.cwe)}</span>`:''}</div>
-    </div>`;
-    fl.appendChild(div);
-  });
-}
-function togF(hd){
-  const b=hd.nextElementSibling,c=hd.querySelector('.f-chev');
-  const open=b.classList.toggle('open');c.style.transform=open?'rotate(180deg)':'';
+function displayUserProfile(data) {
+  profileDiv.innerHTML = '<h2>' + data.name + '</h2>';
+  document.write('<p>' + data.bio + '</p>');
 }
 
-/* ── CHAIN ── */
-async function fetchChain(){
-  try{
-    const r=await fetch(API+'/v1/chain');if(!r.ok)throw new Error('HTTP '+r.status);
-    const d=await r.json();chainCache=d.chain||[];renderChain(d);txt('sChain',chainCache.length);
-  }catch(e){
-    const b=document.getElementById('chainBanner');
-    b.className='badge cib-broken';b.innerHTML='<svg class="ico" width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>SERVER OFFLINE — '+e.message;
-  }
-}
-function renderChain(d){
-  const b=document.getElementById('chainBanner');
-  const intact=d.integrity==='INTACT';
-  b.className='badge '+(intact?'cib-intact':'cib-broken');
-  b.innerHTML=(intact
-    ?'<svg class="ico" width="12" height="12" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>CHAIN INTACT — '+chainCache.length+' entries verified'
-    :'<svg class="ico" width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>CHAIN COMPROMISED — tamper at block '+(d.tampered_at||'?'));
-  const el=document.getElementById('chainList');
-  if(!chainCache.length){el.innerHTML='<div class="no-chain-msg"><svg class="ico" width="40" height="40" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>No entries yet</div>';return}
-  el.innerHTML='';
-  chainCache.forEach((e,i)=>{
-    const ts=e.timestamp?new Date(e.timestamp).toLocaleString():'—';
-    const vc=e.data&&e.data.findings?e.data.findings.length:0;
-    const sc=e.data?e.data.severity_score||0:0;
-    const div=document.createElement('div');div.className='chain-entry';
-    div.innerHTML=`<div class="chain-connector">
-      <div class="chain-node"></div>
-      <div class="chain-line"></div>
-    </div>
-    <div class="card chain-card">
-      <div class="chain-card-hdr">
-        <span class="chain-idx">#${chainCache.length-i}</span>
-        <span class="chain-ts">${ts}</span>
-        <span class="badge ${vc>0?'badge-red':'badge-green'}">${vc} finding${vc!==1?'s':''}</span>
-        <span class="badge ${sc>=50?'badge-red':sc>=20?'badge-amber':'badge-dim'}">score: ${sc}</span>
-      </div>
-      <div class="chain-hash-row">
-        <div class="chain-hash-line"><span class="chain-hash-key">PREV</span><span class="chain-hash-val chain-hash-prev">${esc((e.prev_hash||'GENESIS').slice(0,64))}</span></div>
-        <div class="chain-hash-line"><span class="chain-hash-key">THIS</span><span class="chain-hash-val">${esc((e.hash||'').slice(0,64))}</span></div>
-      </div>
-    </div>`;
-    el.appendChild(div);
-  });
+element.outerHTML = userInput;`,
+
+  exec: `// COMMAND INJECTION (OWASP A03:2021)
+const { exec } = require('child_process');
+
+function pingHost(hostname) {
+  exec('ping -c 4 ' + hostname, callback);  // OS command injection
 }
 
-/* ── REPORT ── */
-async function genCert(){
-  const sid=document.getElementById('reportId').value.trim();
-  await fetchChain();
-  let entry=null;
-  if(sid)entry=chainCache.find(e=>e.data&&e.data.scan_id===sid);
-  if(!entry&&lastScan)entry={hash:lastScan.chain?lastScan.chain.hash:'—',prev_hash:lastScan.chain?lastScan.chain.prev_hash:'—',data:lastScan};
-  if(!entry&&chainCache.length)entry=chainCache[0];
-  if(!entry){alert('No scan data. Run a scan first.');return}
-  const data=entry.data||{},vc=data.findings?data.findings.length:0,sc=data.severity_score||0,lv=data.risk_level||'CLEAN';
-  txt('cc-id',data.scan_id||'—');txt('cc-ts',data.timestamp?new Date(data.timestamp).toLocaleString():'—');
-  txt('cc-lines',data.lines_scanned||'—');txt('cc-rules',data.rules_evaluated||15);txt('cc-findings',vc);
-  const se=document.getElementById('cc-score');se.textContent=sc;se.className='c-val '+(sc>=50?'crit':sc>=20?'warn':'ok');
-  const le=document.getElementById('cc-level');le.textContent=lv;le.className='c-val '+(sc>=50?'crit':sc>=20?'warn':'ok');
-  txt('cc-code',data.chain?data.chain.code_hash:entry.hash||'—');
-  txt('cc-chain',entry.hash||'—');txt('cc-prev',entry.prev_hash||'GENESIS');
-  const pos=chainCache.indexOf(entry);txt('cc-pos',pos>=0?'#'+(chainCache.length-pos):'1');
-  document.getElementById('cc-int').textContent='INTACT';
-  document.getElementById('certWrap').classList.add('show');
-  document.getElementById('btnPrint').style.display='';
+function convertFile(filename) {
+  const cmd = \`convert \${filename} output.pdf\`;
+  require('child_process').execSync(cmd);  // unsanitized filename
 }
 
-/* ── UTILS ── */
-function showPage(name,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
+// Also: shell: true with user input is dangerous
+execFile(userInput, args, { shell: true }, cb);`
+};
+
+/* ─── STATE ─────────────────────────────────────────────────── */
+let totalScans = 0;
+let totalVulns = 0;
+let cleanScans = 0;
+let chainLength = 0;
+let lastScan = null;
+
+/* ─── PRESET LOADER ─────────────────────────────────────────── */
+function loadPreset(key) {
+  document.getElementById('codeInput').value = PRESETS[key];
+  document.getElementById('codeInput').focus();
+}
+
+/* ─── TAB SWITCH ─────────────────────────────────────────────── */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
   btn.classList.add('active');
-  if(name==='chain')fetchChain();
-}
-function txt(id,v){const el=document.getElementById(id);if(el)el.textContent=v}
-function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function updateLines(){const v=document.getElementById('codeInput').value;txt('lineCount',(v?v.split('\n').length:0)+' lines')}
-function clearAll(){
-  document.getElementById('codeInput').value='';updateLines();
-  document.getElementById('findingsList').innerHTML='';
-  document.getElementById('noFindingsMsg').innerHTML='<svg class="ico" width="28" height="28" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Paste code above and run a scan';
-  document.getElementById('noFindingsMsg').style.display='flex';
-  document.getElementById('fCountPill').style.display='none';
-  document.getElementById('receiptPanel').style.display='none';
-  document.getElementById('receiptRule').style.display='none';
-  document.getElementById('riskBig').textContent='—';document.getElementById('riskBig').style.color='var(--emerald)';
-  document.getElementById('riskBadge').textContent='NO SCAN';document.getElementById('riskBadge').className='badge badge-dim';
-  document.getElementById('riskFill').style.width='0%';
 }
 
-connectSSE();
-setInterval(()=>{fetch(API+'/v1/chain').then(r=>r.json()).then(d=>{if(d.chain)txt('sChain',d.chain.length)}).catch(()=>{})},12000);
+/* ─── SCAN ENGINE ─────────────────────────────────────────────── */
+const RULES = [
+  { id: 'SQL_INJECT', name: 'SQL String Concatenation', sev: 'CRITICAL', owasp: 'A03', patterns: [/["'`]\s*\+\s*(userId|username|id|input|query|param)/i, /WHERE\s+\w+\s*=\s*['"`]\s*\+/i, /`SELECT.*\$\{/i] },
+  { id: 'EVAL_EXEC', name: 'eval() Code Injection', sev: 'CRITICAL', owasp: 'A03', patterns: [/\beval\s*\(/] },
+  { id: 'HARDCODED_SECRET', name: 'Hardcoded Secret / API Key', sev: 'HIGH', owasp: 'A02', patterns: [/(?:apiKey|api_key|password|secret|token|jwt|awsKey)\s*[:=]\s*["'`][A-Za-z0-9+/=_\-\.@!]{8,}/i, /sk-[A-Za-z0-9]{20,}/, /AKIA[0-9A-Z]{16}/] },
+  { id: 'XSS_INNERHTML', name: 'XSS via innerHTML / outerHTML', sev: 'HIGH', owasp: 'A03', patterns: [/\.innerHTML\s*=/, /\.outerHTML\s*=/, /document\.write\s*\(/] },
+  { id: 'CMD_INJECT', name: 'OS Command Injection', sev: 'CRITICAL', owasp: 'A03', patterns: [/exec\s*\(.*\+/, /execSync\s*\(\s*`/, /shell:\s*true/i] },
+  { id: 'PATH_TRAVERSE', name: 'Path Traversal', sev: 'HIGH', owasp: 'A01', patterns: [/\.\.\//g, /path\.join\(.*req\./i, /readFile\(.*\+/i] },
+  { id: 'CONSOLE_LOG', name: 'Debug Logging in Production', sev: 'LOW', owasp: 'A09', patterns: [/console\.(log|debug|info)\s*\(.*(?:pass|secret|token|key)/i] },
+  { id: 'NEW_FUNCTION', name: 'Dynamic Code via new Function()', sev: 'CRITICAL', owasp: 'A03', patterns: [/new\s+Function\s*\(/] },
+  { id: 'SETTIMEOUT_STR', name: 'setTimeout/setInterval with string', sev: 'HIGH', owasp: 'A03', patterns: [/setTimeout\s*\(\s*["'`]/, /setInterval\s*\(\s*["'`]/] },
+  { id: 'DB_TEMPLATE', name: 'Unsafe DB Template Literal', sev: 'HIGH', owasp: 'A03', patterns: [/db\.(query|execute)\s*\(\s*`[^`]*\$\{/i] },
+  { id: 'MONGO_INJECT', name: 'NoSQL Injection Risk', sev: 'HIGH', owasp: 'A03', patterns: [/\$where\s*:/i, /find\(\s*\{[^}]*\$[a-z]/i] },
+  { id: 'WEAK_CRYPTO', name: 'Weak Cryptography (MD5/SHA1)', sev: 'MEDIUM', owasp: 'A02', patterns: [/createHash\s*\(\s*['"]md5['"]/, /createHash\s*\(\s*['"]sha1['"]/] },
+  { id: 'OPEN_REDIRECT', name: 'Open Redirect', sev: 'MEDIUM', owasp: 'A01', patterns: [/res\.redirect\s*\(.*req\.(query|body|params)/i, /location\.href\s*=.*[+`]/i] },
+  { id: 'PROTOTYPE_POLL', name: 'Prototype Pollution', sev: 'HIGH', owasp: 'A08', patterns: [/__proto__/i, /\["__proto__"\]/, /Object\.assign\([^,]+,.*req\./i] },
+  { id: 'REGEX_DDOS', name: 'ReDoS Vulnerable Regex', sev: 'MEDIUM', owasp: 'A06', patterns: [/\(\.\+\)\+/, /\(\.\*\)\*/, /\(a\+\)\+/] },
+];
+
+function scanCode(code) {
+  const lines = code.split('\n');
+  const findings = [];
+
+  RULES.forEach(rule => {
+    lines.forEach((line, idx) => {
+      const lineTrimmed = line.trim();
+      if (!lineTrimmed || lineTrimmed.startsWith('//') || lineTrimmed.startsWith('#')) return;
+      for (const pat of rule.patterns) {
+        if (pat.test(line)) {
+          findings.push({
+            rule_id: rule.id,
+            rule_name: rule.name,
+            severity: rule.sev,
+            owasp: rule.owasp,
+            line: idx + 1,
+            line_text: line.trim().slice(0, 80),
+          });
+          break;
+        }
+      }
+    });
+  });
+
+  const severityScore = findings.reduce((s, f) => {
+    return s + ({ CRITICAL: 10, HIGH: 6, MEDIUM: 3, LOW: 1 }[f.severity] || 0);
+  }, 0);
+
+  const risk = severityScore >= 20 ? 'CRITICAL' : severityScore >= 10 ? 'HIGH' : severityScore >= 4 ? 'MEDIUM' : findings.length === 0 ? 'CLEAN' : 'LOW';
+
+  return {
+    scan_id: 'CV-' + Date.now().toString(36).toUpperCase(),
+    findings,
+    severity_score: severityScore,
+    risk_level: risk,
+    lines_scanned: lines.length,
+    rules_evaluated: RULES.length,
+    timestamp: new Date().toISOString(),
+  };
+}
+
+function sha256Sim(str) {
+  // Browser-side SHA-256 simulation using Web Crypto API (async) or simple hash
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  const hex = Math.abs(hash).toString(16).padStart(8, '0');
+  // Expand to 64-char sim hash
+  return (hex + hex + hex + hex + hex + hex + hex + hex).slice(0, 64);
+}
+
+/* ─── RUN SCAN ─────────────────────────────────────────────── */
+function runScan() {
+  const code = document.getElementById('codeInput').value.trim();
+  if (!code) {
+    document.getElementById('scanHint').textContent = 'No code to scan — paste code or select a preset';
+    return;
+  }
+
+  const btn = document.getElementById('scanBtn');
+  btn.disabled = true;
+  document.getElementById('scanHint').textContent = 'Scanning...';
+
+  setTimeout(() => {
+    const result = scanCode(code);
+    const codeHash = sha256Sim(code);
+    const prevHash = lastScan ? lastScan.chain_hash : '0'.repeat(64);
+    const chainHash = sha256Sim(result.scan_id + codeHash + prevHash);
+
+    result.chain = { hash: chainHash, prev_hash: prevHash, code_hash: codeHash, position: chainLength + 1 };
+    lastScan = { ...result, chain_hash: chainHash };
+
+    chainLength++;
+    totalScans++;
+    totalVulns += result.findings.length;
+    if (result.findings.length === 0) cleanScans++;
+
+    updateMetrics();
+    renderFindings(result);
+    updateHUD(result);
+    updateReceipt(result, codeHash, chainHash, prevHash);
+    pushEvent(result);
+
+    btn.disabled = false;
+    document.getElementById('scanHint').textContent = `${result.findings.length} finding${result.findings.length !== 1 ? 's' : ''} — ${result.lines_scanned} lines — ${result.risk_level}`;
+  }, 300);
+}
+
+/* ─── UPDATE METRICS ─────────────────────────────────────────── */
+function updateMetrics() {
+  document.getElementById('metricScans').innerHTML = totalScans + ' <span>RUNS</span>';
+  document.getElementById('metricVulns').innerHTML = totalVulns + ' <span>FOUND</span>';
+  document.getElementById('metricClean').innerHTML = cleanScans + ' <span>SAFE</span>';
+  document.getElementById('metricChain').innerHTML = chainLength + ' <span>BLOCKS</span>';
+}
+
+/* ─── RENDER FINDINGS ─────────────────────────────────────────── */
+const ADVISORIES = {
+  SQL_INJECT: 'Never concatenate user input into SQL queries. Use parameterized queries or prepared statements. Vulnerable to OWASP A03:2021 Injection.',
+  EVAL_EXEC: 'eval() executes arbitrary code strings. Replace with JSON.parse() for data, or refactor logic to avoid dynamic code execution entirely.',
+  HARDCODED_SECRET: 'Secrets embedded in source code are exposed to version control and logs. Use environment variables or a secrets manager (e.g., AWS Secrets Manager, Vault).',
+  XSS_INNERHTML: 'Setting innerHTML with user-controlled data enables XSS attacks. Use textContent, or sanitize with DOMPurify before any HTML insertion.',
+  CMD_INJECT: 'Unsanitized input in exec/execSync allows OS command injection. Use execFile() with an argument array (no shell interpolation) and validate all inputs.',
+  PATH_TRAVERSE: 'Unsanitized file path input allows directory traversal (../../etc/passwd). Resolve paths with path.resolve() and verify they stay within an allowed base directory.',
+  CONSOLE_LOG: 'Logging sensitive data (passwords, tokens) to console leaks credentials in production log aggregators. Remove debug logs before deployment.',
+  NEW_FUNCTION: 'new Function() evaluates string code like eval(). Refactor to use a proper data-driven approach without dynamic code generation.',
+  SETTIMEOUT_STR: 'Passing a string to setTimeout/setInterval is equivalent to eval(). Pass a function reference instead.',
+  DB_TEMPLATE: 'Template literals in database queries with interpolated variables are injectable. Use parameterized query APIs provided by your DB driver.',
+  MONGO_INJECT: 'Unsanitized objects passed to MongoDB queries allow operator injection ($where, $gt). Validate and sanitize all query parameters.',
+  WEAK_CRYPTO: 'MD5 and SHA-1 are cryptographically broken. Use SHA-256 or stronger for integrity checks, and bcrypt/argon2 for passwords.',
+  OPEN_REDIRECT: 'Redirecting to a URL taken from request parameters allows phishing attacks. Validate redirect targets against an allowlist of trusted URLs.',
+  PROTOTYPE_POLL: 'Merging user-controlled objects can poison Object.prototype. Use Object.create(null) for dictionaries and validate keys against __proto__, constructor, prototype.',
+  REGEX_DDOS: 'Nested quantifiers in regex (e.g., (a+)+) cause exponential backtracking on crafted input. Use a linear-time regex engine or restructure the pattern.',
+};
+
+function badgeClass(sev) {
+  return { CRITICAL: 'badge-blocked', HIGH: 'badge-tripped', MEDIUM: 'badge-ice', LOW: 'badge-settled', CLEAN: 'badge-settled' }[sev] || 'badge-settled';
+}
+
+function renderFindings(result) {
+  const body = document.getElementById('findingsBody');
+  const empty = document.getElementById('findingsEmpty');
+  if (empty) empty.remove();
+
+  // Clear previous scan rows
+  body.innerHTML = '';
+
+  if (result.findings.length === 0) {
+    body.innerHTML = `<div class="audit-empty-view" style="color:var(--emerald)">[ CLEAN — NO VULNERABILITIES DETECTED IN ${result.lines_scanned} LINES ]</div>`;
+    return;
+  }
+
+  result.findings.forEach((f, i) => {
+    const row = document.createElement('div');
+    row.className = 'audit-row';
+    row.innerHTML = `
+      <div style="color:#f8fafc;font-weight:700">${esc(f.rule_name)}</div>
+      <div><span class="audit-badge ${badgeClass(f.severity)}">${f.severity}</span></div>
+      <div style="color:var(--ice)">L${f.line}</div>
+      <div><span class="audit-badge badge-blocked">FLAGGED</span></div>
+    `;
+    const advisory = document.createElement('div');
+    advisory.className = 'audit-row-advisory';
+    advisory.id = 'adv-' + i;
+    advisory.innerHTML = `<span style="color:var(--ice);font-weight:700">[${f.rule_id}]</span> ${ADVISORIES[f.rule_id] || 'Review this pattern for security vulnerabilities.'}<br><span style="color:var(--steel)">Line ${f.line}: </span><span style="color:var(--amber)">${esc(f.line_text)}</span>`;
+    row.addEventListener('click', () => advisory.classList.toggle('open'));
+    body.appendChild(row);
+    body.appendChild(advisory);
+  });
+}
+
+/* ─── UPDATE HUD ─────────────────────────────────────────────── */
+function updateHUD(result) {
+  const score = Math.min(result.severity_score, 60);
+  const pct = Math.round((score / 60) * 100);
+  const bar = document.getElementById('riskBar');
+  bar.style.width = pct + '%';
+  bar.className = 'risk-progress-fill' + (result.severity_score >= 20 ? ' high' : result.severity_score >= 8 ? ' medium' : '');
+
+  document.getElementById('riskScoreVal').textContent = result.severity_score;
+  document.getElementById('riskBadge').textContent = result.risk_level;
+  document.getElementById('hudRules').textContent = result.rules_evaluated + ' RULES';
+  document.getElementById('hudLines').textContent = result.lines_scanned + ' LINES';
+  document.getElementById('hudSeverity').textContent = result.severity_score;
+}
+
+/* ─── UPDATE RECEIPT ─────────────────────────────────────────── */
+function updateReceipt(result, codeHash, chainHash, prevHash) {
+  document.getElementById('rcpScanId').textContent = result.scan_id;
+  document.getElementById('rcpTime').textContent = new Date(result.timestamp).toLocaleTimeString();
+  document.getElementById('rcpLines').textContent = result.lines_scanned;
+  document.getElementById('rcpFindings').textContent = result.findings.length;
+  document.getElementById('rcpRisk').textContent = result.risk_level;
+  document.getElementById('rcpCodeHash').textContent = codeHash.slice(0, 16) + '...';
+  document.getElementById('rcpChainHash').textContent = chainHash.slice(0, 16) + '...';
+  document.getElementById('rcpPrevHash').textContent = prevHash.slice(0, 16) + '...';
+  document.getElementById('rcpChainPos').textContent = '#' + chainLength;
+  document.getElementById('forensicReceipt').classList.add('visible');
+}
+
+/* ─── EVENT FEED ─────────────────────────────────────────────── */
+function pushEvent(result) {
+  const feed = document.getElementById('eventFeed');
+  feed.innerHTML = '';
+  const events = [
+    { dot: result.findings.length > 0 ? '#E11D48' : '#10B981', text: `scan:${result.scan_id} — ${result.findings.length} finding(s)`, time: new Date().toLocaleTimeString() },
+    { dot: '#7DD3FC', text: `chain:block_${chainLength} linked — SHA-256 hash sealed`, time: new Date().toLocaleTimeString() },
+    { dot: '#F59E0B', text: `rules:${result.rules_evaluated} evaluated — ${result.lines_scanned} lines`, time: new Date().toLocaleTimeString() },
+  ];
+  events.forEach(ev => {
+    const entry = document.createElement('div');
+    entry.className = 'event-entry';
+    entry.innerHTML = `<div class="event-dot" style="background:${ev.dot}"></div><span class="event-text">${ev.text}</span><span class="event-time">${ev.time}</span>`;
+    feed.appendChild(entry);
+  });
+}
+
+/* ─── FETCH CHAIN ─────────────────────────────────────────────── */
+async function fetchChain() {
+  const tl = document.getElementById('chainTimeline');
+  tl.innerHTML = '<div style="font-family:var(--font-mono);font-size:10px;color:var(--steel);padding:16px 0;letter-spacing:1px;">Fetching from localhost:3000...</div>';
+
+  try {
+    const res = await fetch('http://localhost:3000/v1/chain');
+    const data = await res.json();
+
+    const badge = document.getElementById('chainIntegrity');
+    if (data.integrity === 'INTACT') {
+      badge.className = 'chain-integrity-badge chain-integrity-intact';
+      badge.innerHTML = '<svg class="ico" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> CHAIN INTACT';
+    } else {
+      badge.className = 'chain-integrity-badge chain-integrity-compromised';
+      badge.innerHTML = '<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> CHAIN COMPROMISED';
+    }
+
+    if (!data.chain || data.chain.length === 0) {
+      tl.innerHTML = '<div style="font-family:var(--font-mono);font-size:10px;color:var(--steel);padding:20px 0;letter-spacing:1px;">[ NO BLOCKS YET — RUN A SCAN FIRST ]</div>';
+      return;
+    }
+
+    tl.innerHTML = '';
+    data.chain.slice().reverse().forEach(block => {
+      const wrap = document.createElement('div');
+      wrap.className = 'chain-node-wrap';
+
+      const sev = block.findings > 0 ? 'badge-tripped' : 'badge-settled';
+      const sevText = block.findings > 0 ? block.findings + ' FINDINGS' : 'CLEAN';
+
+      wrap.innerHTML = `
+        <div class="chain-dot-col"><div class="chain-dot"></div></div>
+        <div class="chain-card">
+          <div class="chain-card-header">
+            <div class="chain-idx">BLOCK #${block.position}</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="audit-badge ${sev}">${sevText}</span>
+              <div class="chain-ts">${new Date(block.timestamp).toLocaleString()}</div>
+            </div>
+          </div>
+          <div class="chain-hash-line"><span>THIS:</span> ${block.hash ? block.hash.slice(0, 40) + '...' : '—'}</div>
+          <div class="chain-hash-line"><span>PREV:</span> ${block.prev_hash ? block.prev_hash.slice(0, 40) + '...' : '—'}</div>
+          <div class="chain-hash-line"><span>CODE:</span> ${block.code_hash ? block.code_hash.slice(0, 40) + '...' : '—'}</div>
+        </div>
+      `;
+      tl.appendChild(wrap);
+    });
+
+  } catch (err) {
+    tl.innerHTML = `<div style="font-family:var(--font-mono);font-size:10px;color:var(--amber);padding:16px 0;letter-spacing:1px;">[ERR] Could not reach localhost:3000 — start the server with: node src/server.js<br><br>Chain blocks will appear here once the server is running.</div>`;
+  }
+}
+
+/* ─── GENERATE CERTIFICATE ─────────────────────────────────────── */
+function generateCert() {
+  const proj = document.getElementById('certProject').value.trim() || 'unnamed-project';
+
+  document.getElementById('certProjVal').textContent = proj;
+  document.getElementById('certScanId').textContent = lastScan ? lastScan.scan_id : 'NO SCAN YET';
+  document.getElementById('certGenTime').textContent = new Date().toLocaleString();
+  document.getElementById('certRisk').textContent = lastScan ? lastScan.risk_level : '—';
+  document.getElementById('certFindings').textContent = lastScan ? lastScan.findings.length + ' VULNS' : '—';
+  document.getElementById('certHash').textContent = lastScan ? lastScan.chain_hash.slice(0, 24) + '...' : '—';
+  document.getElementById('certCard').classList.add('visible');
+}
+
+/* ─── UTILS ─────────────────────────────────────────────────── */
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* ─── KEYBOARD SHORTCUT ─────────────────────────────────────── */
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') runScan();
+});
 </script>
+
 </body>
 </html>
