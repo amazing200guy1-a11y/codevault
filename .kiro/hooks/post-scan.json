@@ -1,0 +1,8 @@
+{
+  "hookName": "post-scan",
+  "description": "Log scan completion events to audit trail",
+  "trigger": "PostAgentTask",
+  "taskPatterns": ["scan*", "audit*"],
+  "command": "node -e \"console.log('[HOOK] Scan completed at', new Date().toISOString())\"",
+  "onSuccess": "echo [HOOK] Scan logged"
+}

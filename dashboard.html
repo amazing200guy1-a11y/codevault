@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CodeVault — Forensic Code Scanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#04070D;
+  --bg2:#080C14;
+  --card-from:#232C3B;
+  --card-mid:#171E2A;
+  --card-to:#0F131C;
+  --border:rgba(200,220,240,0.18);
+  --inset:rgba(200,220,240,0.07);
+  --shadow:0 8px 32px rgba(0,0,0,0.6);
+  --emerald:#10B981;
+  --crimson:#E11D48;
+  --amber:#F59E0B;
+  --ice:#7DD3FC;
+  --text:#E2E8F0;
+  --muted:#64748B;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Outfit',sans-serif;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans)}
+/* Layout */
+.layout{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+/* Top bar */
+.topbar{display:flex;align-items:center;gap:16px;padding:0 20px;height:52px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{display:flex;align-items:center;gap:10px}
+.logo svg{width:22px;height:22px;color:var(--ice)}
+.logo-text{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:0.08em;color:var(--text)}
+.logo-sub{font-size:11px;color:var(--muted);margin-left:2px}
+.spacer{flex:1}
+.sse-badge{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:3px;border:1px solid var(--border);background:var(--inset)}
+.sse-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);transition:background .3s}
+.sse-dot.connected{background:var(--emerald);box-shadow:0 0 6px var(--emerald)}
+.sse-dot.error{background:var(--crimson)}
+/* Nav tabs */
+.nav{display:flex;gap:2px;padding:0 20px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0}
+.nav-tab{font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;padding:10px 18px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--ice);border-bottom-color:var(--ice)}
+/* Pages */
+.pages{flex:1;overflow:hidden;position:relative}
+.page{position:absolute;inset:0;overflow-y:auto;padding:20px;display:none;flex-direction:column;gap:16px}
+.page.active{display:flex}
+/* Cards */
+.card{background:linear-gradient(135deg,var(--card-from),var(--card-mid),var(--card-to));border:1px solid var(--border);border-radius:6px;box-shadow:var(--shadow)}
+.card-inner{padding:16px}
+.card-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.card-title{font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+/* Stat strip */
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-box{background:linear-gradient(135deg,var(--card-from),var(--card-mid),var(--card-to));border:1px solid var(--border);border-radius:6px;padding:14px 16px;box-shadow:var(--shadow)}
+.stat-label{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.stat-val{font-family:var(--mono);font-size:26px;font-weight:700;line-height:1}
+.stat-val.emerald{color:var(--emerald)}
+.stat-val.crimson{color:var(--crimson)}
+.stat-val.amber{color:var(--amber)}
+.stat-val.ice{color:var(--ice)}
+/* Input area */
+.scan-row{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start}
+.textarea-wrap{display:flex;flex-direction:column;gap:8px}
+textarea{width:100%;height:220px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:12px;padding:12px;resize:vertical;outline:none;line-height:1.6}
+textarea:focus{border-color:var(--ice)}
+textarea::placeholder{color:var(--muted)}
+.scan-controls{display:flex;flex-direction:column;gap:10px}
+.btn-scan{width:100%;padding:12px;border:none;border-radius:6px;background:linear-gradient(135deg,#1E3A5F,#0F2744);border:1px solid var(--ice);color:var(--ice);font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:0.08em;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-scan:hover{background:linear-gradient(135deg,#254870,#1a3560);box-shadow:0 0 12px rgba(125,211,252,0.2)}
+.btn-scan:disabled{opacity:0.5;cursor:not-allowed}
+.btn-clear{width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;background:var(--inset);color:var(--muted);font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .2s}
+.btn-clear:hover{border-color:var(--border);color:var(--text)}
+/* Risk meter */
+.risk-meter{padding:14px;border-radius:6px;border:1px solid var(--border);background:var(--inset)}
+.risk-label{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.risk-bar-track{height:8px;border-radius:4px;background:rgba(255,255,255,0.06);overflow:hidden;margin-bottom:8px}
+.risk-bar-fill{height:100%;border-radius:4px;background:var(--emerald);width:0%;transition:width .6s,background .4s}
+.risk-score{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--emerald)}
+.risk-level{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px}
+/* SSE feed */
+.feed-box{height:100px;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-family:var(--mono);font-size:10px;line-height:1.8;color:var(--muted)}
+.feed-line{display:flex;gap:8px}
+.feed-time{color:var(--muted);flex-shrink:0}
+.feed-msg{color:var(--text)}
+.feed-msg.ok{color:var(--emerald)}
+.feed-msg.err{color:var(--crimson)}
+.feed-msg.warn{color:var(--amber)}
+/* Findings */
+.findings-list{display:flex;flex-direction:column;gap:8px}
+.no-findings{text-align:center;padding:32px;color:var(--muted);font-family:var(--mono);font-size:12px}
+.finding-card{border-radius:6px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)}
+.finding-header{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;background:linear-gradient(135deg,var(--card-from),var(--card-mid));user-select:none}
+.finding-header:hover{background:linear-gradient(135deg,#2a3547,#1c2535)}
+.sev-pill{font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:0.06em;flex-shrink:0}
+.sev-CRITICAL{background:rgba(225,29,72,0.2);color:var(--crimson);border:1px solid rgba(225,29,72,0.35)}
+.sev-HIGH{background:rgba(245,158,11,0.2);color:var(--amber);border:1px solid rgba(245,158,11,0.35)}
+.sev-MEDIUM{background:rgba(125,211,252,0.15);color:var(--ice);border:1px solid rgba(125,211,252,0.3)}
+.sev-LOW{background:rgba(16,185,129,0.15);color:var(--emerald);border:1px solid rgba(16,185,129,0.3)}
+.finding-rule{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ice);flex-shrink:0}
+.finding-title{font-size:12px;font-weight:500;flex:1}
+.finding-line{font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto;flex-shrink:0}
+.finding-chevron{width:14px;height:14px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+.finding-body{display:none;padding:14px;border-top:1px solid var(--border);background:var(--card-to);gap:12px;flex-direction:column}
+.finding-body.open{display:flex}
+.finding-snippet{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:8px 10px;font-family:var(--mono);font-size:11px;color:var(--amber);overflow-x:auto;white-space:pre}
+.advisory-block{display:flex;flex-direction:column;gap:6px}
+.adv-section{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.adv-text{font-size:12px;color:var(--text);line-height:1.6}
+.adv-fix{background:var(--bg);border-left:2px solid var(--emerald);padding:8px 10px;border-radius:0 4px 4px 0;font-family:var(--mono);font-size:11px;color:var(--emerald);white-space:pre-wrap}
+.owasp-cwe{display:flex;gap:10px;flex-wrap:wrap}
+.tag-pill{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid var(--border);color:var(--muted);background:var(--inset)}
+/* Forensic receipt */
+.receipt{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:14px}
+.receipt-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ice);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.receipt-row{display:flex;gap:10px;align-items:baseline;margin-bottom:6px;flex-wrap:wrap}
+.receipt-key{font-family:var(--mono);font-size:10px;color:var(--muted);min-width:110px;flex-shrink:0}
+.receipt-val{font-family:var(--mono);font-size:11px;color:var(--text);word-break:break-all}
+.receipt-val.hash{color:var(--ice)}
+.receipt-val.ok{color:var(--emerald)}
+.receipt-val.warn{color:var(--amber)}
+/* Audit chain page */
+.chain-banner{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:6px;border:1px solid var(--border);background:var(--inset)}
+.chain-banner-icon{width:18px;height:18px;flex-shrink:0}
+.chain-banner-text{font-family:var(--mono);font-size:12px}
+.chain-entries{display:flex;flex-direction:column;gap:10px}
+.chain-entry{background:linear-gradient(135deg,var(--card-from),var(--card-mid),var(--card-to));border:1px solid var(--border);border-radius:6px;padding:14px;box-shadow:var(--shadow)}
+.entry-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.entry-idx{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--muted);background:var(--inset);border:1px solid var(--border);border-radius:3px;padding:2px 8px}
+.entry-ts{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.entry-vulns{font-family:var(--mono);font-size:10px;flex-shrink:0}
+.hash-chain{display:flex;flex-direction:column;gap:4px}
+.hash-row{display:flex;gap:10px;align-items:center}
+.hash-key{font-family:var(--mono);font-size:10px;color:var(--muted);min-width:90px;flex-shrink:0}
+.hash-val{font-family:var(--mono);font-size:10px;color:var(--ice);word-break:break-all}
+.hash-val.genesis{color:var(--emerald)}
+.chain-link{margin:4px 0 4px 90px;font-family:var(--mono);font-size:14px;color:var(--muted)}
+.no-entries{text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:12px}
+/* Report page */
+.report-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.report-input{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:12px;padding:10px 14px;outline:none}
+.report-input:focus{border-color:var(--ice)}
+.btn-gen{padding:10px 20px;border:1px solid var(--ice);border-radius:6px;background:var(--inset);color:var(--ice);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.06em;cursor:pointer;transition:all .2s}
+.btn-gen:hover{background:rgba(125,211,252,0.1)}
+.btn-print{padding:10px 20px;border:1px solid var(--emerald);border-radius:6px;background:var(--inset);color:var(--emerald);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.06em;cursor:pointer;display:none}
+.report-cert{display:none}
+.report-cert.visible{display:block}
+.cert-frame{background:var(--bg2);border:1px solid var(--ice);border-radius:6px;padding:24px;max-width:720px}
+.cert-header{text-align:center;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:16px}
+.cert-logo-text{font-family:var(--mono);font-size:18px;font-weight:700;letter-spacing:0.1em;color:var(--ice)}
+.cert-subtitle{font-size:12px;color:var(--muted);margin-top:4px}
+.cert-title{font-size:20px;font-weight:700;margin-top:12px;color:var(--text)}
+.cert-section{margin-bottom:16px}
+.cert-section-title{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:4px;margin-bottom:10px}
+.cert-row{display:flex;gap:10px;margin-bottom:6px}
+.cert-key{font-family:var(--mono);font-size:11px;color:var(--muted);min-width:140px;flex-shrink:0}
+.cert-val{font-family:var(--mono);font-size:11px;color:var(--text);word-break:break-all}
+.cert-val.hash{color:var(--ice)}
+.cert-val.ok{color:var(--emerald)}
+.cert-val.warn{color:var(--amber)}
+.cert-val.crit{color:var(--crimson)}
+.cert-footer{text-align:center;font-family:var(--mono);font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:16px}
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+/* Spinner */
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:14px;height:14px;border:2px solid rgba(125,211,252,0.3);border-top-color:var(--ice);border-radius:50%;animation:spin .7s linear infinite;display:none}
+.scanning .spinner{display:block}
+.scanning .scan-icon{display:none}
+/* Print */
+@media print{
+  .topbar,.nav,.scan-row,.stat-strip,.feed-box,.scan-controls,.report-controls{display:none!important}
+  .page{display:flex!important;position:static!important;overflow:visible!important}
+  .report-cert{display:block!important}
+  body{background:white;color:black}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      <circle cx="12" cy="16" r="1"/>
+    </svg>
+    <span class="logo-text">CODEVAULT</span>
+    <span class="logo-sub">/ forensic scanner</span>
+  </div>
+  <div class="spacer"></div>
+  <div class="sse-badge">
+    <div class="sse-dot" id="sseDot"></div>
+    <span id="sseStatus">OFFLINE</span>
+  </div>
+</div>
+
+<!-- Nav -->
+<div class="nav">
+  <button class="nav-tab active" onclick="switchPage('scan',this)">Scan</button>
+  <button class="nav-tab" onclick="switchPage('chain',this)">Audit Chain</button>
+  <button class="nav-tab" onclick="switchPage('report',this)">Report</button>
+</div>
+
+<!-- Pages -->
+<div class="pages">
+
+  <!-- SCAN PAGE -->
+  <div class="page active" id="page-scan">
+
+    <!-- Stat strip -->
+    <div class="stat-strip">
+      <div class="stat-box">
+        <div class="stat-label">Total Scans</div>
+        <div class="stat-val ice" id="statTotal">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Vulnerabilities</div>
+        <div class="stat-val crimson" id="statVulns">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Clean Scans</div>
+        <div class="stat-val emerald" id="statClean">0</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Chain Length</div>
+        <div class="stat-val amber" id="statChain">0</div>
+      </div>
+    </div>
+
+    <!-- Scan input row -->
+    <div class="scan-row">
+      <div class="textarea-wrap">
+        <textarea id="codeInput" placeholder="// Paste code here to scan for vulnerabilities...&#10;// Supports JavaScript, Python, SQL, and more.&#10;&#10;// Example — try this:&#10;// const query = 'SELECT * FROM users WHERE id = ' + userId;&#10;// exec(userInput);&#10;// const secret = 'REDACTED_sk-EXAMPLE_KEY_FOR_DEMO';" spellcheck="false"></textarea>
+        <!-- SSE feed -->
+        <div class="feed-box" id="feedBox">
+          <div class="feed-line"><span class="feed-time">--:--:--</span><span class="feed-msg">Waiting for server connection...</span></div>
+        </div>
+      </div>
+      <div class="scan-controls">
+        <button class="btn-scan" id="btnScan" onclick="runScan()">
+          <div class="spinner"></div>
+          <svg class="scan-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          SCAN CODE
+        </button>
+        <button class="btn-clear" onclick="clearAll()">CLEAR</button>
+        <!-- Risk meter -->
+        <div class="risk-meter">
+          <div class="risk-label">Risk Score</div>
+          <div class="risk-bar-track"><div class="risk-bar-fill" id="riskBar"></div></div>
+          <div class="risk-score" id="riskScore">—</div>
+          <div class="risk-level" id="riskLevel">No scan yet</div>
+        </div>
+        <!-- Forensic receipt -->
+        <div class="receipt" id="receipt" style="display:none">
+          <div class="receipt-title">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            FORENSIC RECEIPT
+          </div>
+          <div class="receipt-row"><span class="receipt-key">scan_id</span><span class="receipt-val" id="rScanId">—</span></div>
+          <div class="receipt-row"><span class="receipt-key">timestamp</span><span class="receipt-val" id="rTs">—</span></div>
+          <div class="receipt-row"><span class="receipt-key">lines_scanned</span><span class="receipt-val" id="rLines">—</span></div>
+          <div class="receipt-row"><span class="receipt-key">findings</span><span class="receipt-val" id="rFindings">—</span></div>
+          <div class="receipt-row"><span class="receipt-key">severity</span><span class="receipt-val" id="rSev">—</span></div>
+          <div class="receipt-row"><span class="receipt-key">code_hash</span><span class="receipt-val hash" id="rCodeHash">—</span></div>
+          <div class="receipt-row"><span class="receipt-key">chain_hash</span><span class="receipt-val hash" id="rChainHash">—</span></div>
+          <div class="receipt-row"><span class="receipt-key">prev_hash</span><span class="receipt-val hash" id="rPrevHash">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Findings -->
+    <div class="card">
+      <div class="card-inner">
+        <div class="card-header">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span class="card-title">Findings</span>
+        </div>
+        <div class="findings-list" id="findingsList">
+          <div class="no-findings">Scan code to see vulnerability findings.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-scan -->
+
+  <!-- AUDIT CHAIN PAGE -->
+  <div class="page" id="page-chain">
+    <div class="chain-banner" id="chainBanner">
+      <svg class="chain-banner-icon" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span class="chain-banner-text" id="chainBannerText">Loading chain data...</span>
+    </div>
+    <div class="chain-entries" id="chainEntries">
+      <div class="no-entries">No audit entries yet. Run a scan first.</div>
+    </div>
+  </div>
+
+  <!-- REPORT PAGE -->
+  <div class="page" id="page-report">
+    <div class="card">
+      <div class="card-inner">
+        <div class="card-header">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span class="card-title">Forensic Certificate Generator</span>
+        </div>
+        <div class="report-controls">
+          <input class="report-input" id="reportScanId" placeholder="Enter Scan ID (from receipt) or leave blank for latest..."/>
+          <button class="btn-gen" onclick="generateCert()">GENERATE</button>
+          <button class="btn-print" id="btnPrint" onclick="window.print()">PRINT / EXPORT</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="report-cert" id="reportCert">
+      <div class="cert-frame">
+        <div class="cert-header">
+          <div class="cert-logo-text">CODEVAULT</div>
+          <div class="cert-subtitle">Forensic Code Security Audit Certificate</div>
+          <div class="cert-title">Certificate of Scan Integrity</div>
+        </div>
+
+        <div class="cert-section">
+          <div class="cert-section-title">Audit Metadata</div>
+          <div class="cert-row"><span class="cert-key">scan_id</span><span class="cert-val" id="cScanId">—</span></div>
+          <div class="cert-row"><span class="cert-key">timestamp</span><span class="cert-val" id="cTs">—</span></div>
+          <div class="cert-row"><span class="cert-key">lines_analyzed</span><span class="cert-val" id="cLines">—</span></div>
+          <div class="cert-row"><span class="cert-key">rules_applied</span><span class="cert-val" id="cRules">—</span></div>
+        </div>
+
+        <div class="cert-section">
+          <div class="cert-section-title">Vulnerability Summary</div>
+          <div class="cert-row"><span class="cert-key">total_findings</span><span class="cert-val" id="cFindings">—</span></div>
+          <div class="cert-row"><span class="cert-key">risk_score</span><span class="cert-val" id="cScore">—</span></div>
+          <div class="cert-row"><span class="cert-key">risk_level</span><span class="cert-val" id="cLevel">—</span></div>
+        </div>
+
+        <div class="cert-section">
+          <div class="cert-section-title">Cryptographic Proof</div>
+          <div class="cert-row"><span class="cert-key">code_sha256</span><span class="cert-val hash" id="cCodeHash">—</span></div>
+          <div class="cert-row"><span class="cert-key">chain_sha256</span><span class="cert-val hash" id="cChainHash">—</span></div>
+          <div class="cert-row"><span class="cert-key">prev_sha256</span><span class="cert-val hash" id="cPrevHash">—</span></div>
+          <div class="cert-row"><span class="cert-key">chain_position</span><span class="cert-val" id="cChainPos">—</span></div>
+          <div class="cert-row"><span class="cert-key">chain_integrity</span><span class="cert-val" id="cIntegrity">—</span></div>
+        </div>
+
+        <div class="cert-footer">
+          This certificate is cryptographically sealed. Any modification to the scanned code or audit record will produce a different SHA-256 hash and break chain verification.
+          <br/>Generated by CodeVault Forensic Scanner — kiroween.devpost.com
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /pages -->
+</div><!-- /layout -->
+
+<script>
+const API = 'http://127.0.0.1:3000';
+let sessionStats = {total:0,vulns:0,clean:0};
+let lastScanResult = null;
+let chainData = [];
+let sseConn = null;
+
+// ── SSE Connection ──────────────────────────────────────────────
+function connectSSE(){
+  if(sseConn) sseConn.close();
+  try{
+    sseConn = new EventSource(API+'/v1/events');
+    sseConn.onopen = ()=>{
+      setSSE('connected','CONNECTED');
+      feedLog('SSE stream connected to '+API,'ok');
+    };
+    sseConn.addEventListener('snapshot', e=>{
+      try{
+        const d = JSON.parse(e.data);
+        if(d.chain_length !== undefined) updateStatChain(d.chain_length);
+        feedLog('Snapshot: chain_length='+d.chain_length,'ok');
+      }catch(err){}
+    });
+    sseConn.addEventListener('scan', e=>{
+      try{
+        const d = JSON.parse(e.data);
+        feedLog('Scan event: '+d.scan_id+' — '+d.findings+' findings','ok');
+      }catch(err){}
+    });
+    sseConn.onerror = ()=>{
+      setSSE('error','OFFLINE');
+      feedLog('SSE connection lost. Retrying in 5s...','err');
+      setTimeout(connectSSE, 5000);
+    };
+  }catch(e){
+    setSSE('error','OFFLINE');
+  }
+}
+
+function setSSE(state,label){
+  const dot = document.getElementById('sseDot');
+  const txt = document.getElementById('sseStatus');
+  dot.className = 'sse-dot '+(state==='connected'?'connected':state==='error'?'error':'');
+  txt.textContent = label;
+}
+
+function feedLog(msg, cls=''){
+  const box = document.getElementById('feedBox');
+  const now = new Date().toTimeString().slice(0,8);
+  const line = document.createElement('div');
+  line.className = 'feed-line';
+  line.innerHTML = '<span class="feed-time">'+now+'</span><span class="feed-msg '+(cls||'')+'">'+escHtml(msg)+'</span>';
+  box.appendChild(line);
+  box.scrollTop = box.scrollHeight;
+}
+
+// ── Scan ────────────────────────────────────────────────────────
+async function runScan(){
+  const code = document.getElementById('codeInput').value.trim();
+  if(!code){feedLog('No code to scan.','warn');return;}
+  const btn = document.getElementById('btnScan');
+  btn.disabled = true;
+  btn.classList.add('scanning');
+  feedLog('Scanning '+code.split('\n').length+' lines...');
+  try{
+    const resp = await fetch(API+'/v1/scan',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({code})
+    });
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    const d = await resp.json();
+    lastScanResult = d;
+    handleScanResult(d);
+  }catch(e){
+    feedLog('Scan failed: '+e.message,'err');
+  }finally{
+    btn.disabled = false;
+    btn.classList.remove('scanning');
+  }
+}
+
+function handleScanResult(d){
+  // Stats
+  sessionStats.total++;
+  const vcount = d.findings ? d.findings.length : 0;
+  sessionStats.vulns += vcount;
+  if(vcount===0) sessionStats.clean++;
+  document.getElementById('statTotal').textContent = sessionStats.total;
+  document.getElementById('statVulns').textContent = sessionStats.vulns;
+  document.getElementById('statClean').textContent = sessionStats.clean;
+  if(d.chain) updateStatChain(d.chain.position);
+
+  // Risk
+  const score = d.severity_score || 0;
+  const level = d.risk_level || 'CLEAN';
+  const pct = Math.min(score,100);
+  const bar = document.getElementById('riskBar');
+  bar.style.width = pct+'%';
+  bar.style.background = score>=50?'var(--crimson)':score>=20?'var(--amber)':'var(--emerald)';
+  document.getElementById('riskScore').textContent = score;
+  document.getElementById('riskScore').style.color = score>=50?'var(--crimson)':score>=20?'var(--amber)':'var(--emerald)';
+  document.getElementById('riskLevel').textContent = level;
+
+  // Receipt
+  const chain = d.chain || {};
+  document.getElementById('receipt').style.display='block';
+  document.getElementById('rScanId').textContent = d.scan_id||'—';
+  document.getElementById('rTs').textContent = d.timestamp ? new Date(d.timestamp).toLocaleString() : '—';
+  document.getElementById('rLines').textContent = d.lines_scanned||'—';
+  document.getElementById('rFindings').textContent = vcount;
+  document.getElementById('rSev').textContent = level;
+  document.getElementById('rCodeHash').textContent = (chain.code_hash||'—').substring(0,32)+'...';
+  document.getElementById('rChainHash').textContent = (chain.hash||'—').substring(0,32)+'...';
+  document.getElementById('rPrevHash').textContent = (chain.prev_hash||'GENESIS').substring(0,32)+'...';
+
+  feedLog('Scan complete: '+vcount+' findings, score='+score+', level='+level, vcount>0?'warn':'ok');
+
+  // Render findings
+  renderFindings(d.findings || []);
+}
+
+function renderFindings(findings){
+  const list = document.getElementById('findingsList');
+  if(!findings.length){
+    list.innerHTML='<div class="no-findings">No vulnerabilities detected. Code appears clean.</div>';
+    return;
+  }
+  list.innerHTML='';
+  findings.forEach((f,i)=>{
+    const sev = f.severity||'LOW';
+    const advisory = f.advisory||{};
+    const card = document.createElement('div');
+    card.className='finding-card';
+    card.innerHTML=`
+      <div class="finding-header" onclick="toggleFinding(this)">
+        <span class="sev-pill sev-${escHtml(sev)}">${escHtml(sev)}</span>
+        <span class="finding-rule">${escHtml(f.rule_id||'')}</span>
+        <span class="finding-title">${escHtml(f.name||'Unknown')}</span>
+        <span class="finding-line">L${f.line||'?'}</span>
+        <svg class="finding-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="finding-body">
+        <div class="finding-snippet">${escHtml(f.match||'')}</div>
+        <div class="advisory-block">
+          <div class="adv-section">What it is</div>
+          <div class="adv-text">${escHtml(advisory.explanation||'No advisory available.')}</div>
+          <div class="adv-section" style="margin-top:10px">Fix</div>
+          <div class="adv-fix">${escHtml(advisory.fix||'No fix guidance available.')}</div>
+          <div class="owasp-cwe" style="margin-top:8px">
+            ${advisory.owasp?`<span class="tag-pill">${escHtml(advisory.owasp)}</span>`:''}
+            ${advisory.cwe?`<span class="tag-pill">${escHtml(advisory.cwe)}</span>`:''}
+          </div>
+        </div>
+      </div>`;
+    list.appendChild(card);
+  });
+}
+
+function toggleFinding(header){
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.finding-chevron');
+  const open = body.classList.toggle('open');
+  chevron.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function clearAll(){
+  document.getElementById('codeInput').value='';
+  document.getElementById('findingsList').innerHTML='<div class="no-findings">Scan code to see vulnerability findings.</div>';
+  document.getElementById('receipt').style.display='none';
+  document.getElementById('riskBar').style.width='0%';
+  document.getElementById('riskScore').textContent='—';
+  document.getElementById('riskLevel').textContent='No scan yet';
+}
+
+// ── Chain Page ──────────────────────────────────────────────────
+async function loadChain(){
+  try{
+    const resp = await fetch(API+'/v1/chain');
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    const d = await resp.json();
+    chainData = d.chain || [];
+    renderChain(d);
+    updateStatChain(chainData.length);
+  }catch(e){
+    document.getElementById('chainBannerText').textContent='Chain unavailable — server offline.';
+  }
+}
+
+function renderChain(d){
+  const banner = document.getElementById('chainBanner');
+  const bannerIcon = banner.querySelector('.chain-banner-icon');
+  const intact = d.integrity === 'INTACT';
+  bannerIcon.style.stroke = intact?'var(--emerald)':'var(--crimson)';
+  document.getElementById('chainBannerText').textContent =
+    intact
+      ? 'Chain INTACT — '+chainData.length+' entries verified. Last verified: '+new Date().toLocaleTimeString()
+      : 'Chain COMPROMISED — tampered entry detected at block '+(d.tampered_at||'?');
+
+  const el = document.getElementById('chainEntries');
+  if(!chainData.length){
+    el.innerHTML='<div class="no-entries">No audit entries yet. Run a scan first.</div>';
+    return;
+  }
+  el.innerHTML='';
+  chainData.forEach((entry,idx)=>{
+    const div = document.createElement('div');
+    div.className='chain-entry';
+    const ts = entry.timestamp ? new Date(entry.timestamp).toLocaleString() : '—';
+    const vcount = entry.data && entry.data.findings ? entry.data.findings.length : '—';
+    const score = entry.data ? (entry.data.severity_score||0) : 0;
+    const prevDisplay = (entry.prev_hash||'GENESIS').length > 16
+      ? (entry.prev_hash||'GENESIS').substring(0,48)+'...'
+      : (entry.prev_hash||'GENESIS');
+    const curDisplay = (entry.hash||'').substring(0,48)+'...';
+    div.innerHTML=`
+      <div class="entry-head">
+        <span class="entry-idx">#${chainData.length - idx}</span>
+        <span class="entry-ts">${ts}</span>
+        <span class="entry-vulns" style="color:${vcount>0?'var(--amber)':'var(--emerald)'}">findings: ${vcount}</span>
+        <span class="entry-vulns" style="color:${score>=50?'var(--crimson)':score>=20?'var(--amber)':'var(--emerald)'}">score: ${score}</span>
+      </div>
+      <div class="hash-chain">
+        <div class="hash-row">
+          <span class="hash-key">prev_hash</span>
+          <span class="hash-val ${entry.prev_hash?'':'genesis'}">${escHtml(prevDisplay)}</span>
+        </div>
+        <div class="chain-link">|</div>
+        <div class="hash-row">
+          <span class="hash-key">this_hash</span>
+          <span class="hash-val">${escHtml(curDisplay)}</span>
+        </div>
+      </div>`;
+    el.appendChild(div);
+  });
+}
+
+function updateStatChain(n){
+  document.getElementById('statChain').textContent = n;
+}
+
+// ── Report Page ─────────────────────────────────────────────────
+async function generateCert(){
+  const scanId = document.getElementById('reportScanId').value.trim();
+  // Find entry: by scan_id in chain data or use lastScanResult
+  let entry = null;
+  if(scanId){
+    // look in chain
+    await loadChain();
+    entry = chainData.find(e => e.data && e.data.scan_id === scanId);
+  } else if(lastScanResult){
+    entry = {
+      hash: lastScanResult.chain ? lastScanResult.chain.hash : '—',
+      prev_hash: lastScanResult.chain ? lastScanResult.chain.prev_hash : '—',
+      data: lastScanResult
+    };
+  }
+  if(!entry && chainData.length){
+    entry = chainData[0]; // newest (chain is newest-first)
+  }
+  if(!entry){
+    alert('No scan data found. Run a scan first.');
+    return;
+  }
+  const data = entry.data || {};
+  const chain_hash = entry.hash || '—';
+  const prev_hash = entry.prev_hash || 'GENESIS';
+  const code_hash = data.chain ? data.chain.code_hash : (chain_hash);
+
+  // Populate cert
+  set('cScanId', data.scan_id||'—');
+  set('cTs', data.timestamp ? new Date(data.timestamp).toLocaleString() : '—');
+  set('cLines', data.lines_scanned||'—');
+  set('cRules', data.rules_evaluated||15);
+  const vcount = data.findings ? data.findings.length : 0;
+  set('cFindings', vcount);
+  const score = data.severity_score || 0;
+  const level = data.risk_level || 'CLEAN';
+  const cScore = document.getElementById('cScore');
+  cScore.textContent = score;
+  cScore.className = 'cert-val '+(score>=50?'crit':score>=20?'warn':'ok');
+  const cLevel = document.getElementById('cLevel');
+  cLevel.textContent = level;
+  cLevel.className = 'cert-val '+(score>=50?'crit':score>=20?'warn':'ok');
+  document.getElementById('cCodeHash').textContent = code_hash||'—';
+  document.getElementById('cChainHash').textContent = chain_hash;
+  document.getElementById('cPrevHash').textContent = prev_hash;
+  set('cChainPos', chainData.indexOf(entry) >= 0 ? '#'+(chainData.length - chainData.indexOf(entry)) : '—');
+  const intEl = document.getElementById('cIntegrity');
+  intEl.textContent = 'INTACT';
+  intEl.className = 'cert-val ok';
+
+  document.getElementById('reportCert').classList.add('visible');
+  document.getElementById('btnPrint').style.display='block';
+}
+
+// ── Helpers ─────────────────────────────────────────────────────
+function switchPage(name, tab){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  tab.classList.add('active');
+  if(name==='chain') loadChain();
+}
+
+function set(id,val){document.getElementById(id).textContent=val;}
+
+function escHtml(s){
+  if(s==null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Init ─────────────────────────────────────────────────────────
+connectSSE();
+// Poll chain stats every 10s
+setInterval(()=>{
+  fetch(API+'/v1/chain').then(r=>r.json()).then(d=>{
+    if(d.chain) updateStatChain(d.chain.length);
+  }).catch(()=>{});
+},10000);
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "hookName": "post-save",
+  "description": "Run CodeVault test suite automatically after any source file is saved",
+  "trigger": "PostFileSave",
+  "filePatterns": ["src/*.js", "test/*.js"],
+  "command": "node test/codevault.test.js",
+  "onSuccess": "echo [HOOK] Tests passed",
+  "onFailure": "echo [HOOK] Tests FAILED — fix before committing"
+}

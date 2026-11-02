@@ -1,0 +1,15 @@
+{
+  "name": "codevault",
+  "version": "1.0.0",
+  "description": "AI-powered code vulnerability scanner with SHA-256 forensic audit chain — Kiroween 2026 Frankenstein entry",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node test/codevault.test.js",
+    "scan": "node -e \"const {scan}=require('./src/scanner');const {enrichFindings}=require('./src/advisor');const fs=require('fs');const code=fs.readFileSync(process.argv[2],'utf8');const r=scan(code);r.findings=enrichFindings(r.findings);console.log(JSON.stringify(r,null,2));\" "
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
